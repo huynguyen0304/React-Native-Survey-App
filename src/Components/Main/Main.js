@@ -12,20 +12,20 @@ export default class Main extends Component {
     }
 
     handleEnter() {
-        let collection = {}
-        collection.code = this.state.code;
+        // let collection = {}
+        // collection.code = this.state.code;
 
-        fetch("", {
-            method: 'GET',
-            headers: new Headers({
-                'Content-type': 'application/json'
-            }),
-            body: JSON.stringify(collection)
-        })
-        .then(res => res.json())
-        .then(this.props.navigation.navigate("survey"))
-        .catch(err => console.error('Error', err))
-        .then(response => console.log('Success', response));
+        // fetch("", {
+        //     method: 'GET',
+        //     headers: new Headers({
+        //         'Content-type': 'application/json'
+        //     }),
+        //     body: JSON.stringify(collection)
+        // })
+        // .then(res => res.json())
+        // .then(this.props.navigation.navigate("survey"))
+        // .catch(err => console.error('Error', err))
+        // .then(response => console.log('Success', response));
 
         // this.props.navigation.navigate("survey");
     }
@@ -37,6 +37,7 @@ export default class Main extends Component {
                     style={styles.textinput}
                     placeholder="SURVEY CODE"
                     value={this.state.code}
+                    maxLength={6}
                     onChangeText={(code) => this.setState({code})}
                 />
                 <TouchableOpacity style={styles.button} onPress={this.handleEnter.bind(this)}>
@@ -64,7 +65,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: 'black',
         marginVertical: 5,
-        textAlign: "center"
+        textAlign: "center",
+        textTransform: "uppercase"
     },
     button: {
         width: '40%',

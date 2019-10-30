@@ -8,13 +8,13 @@ import Signin from './src/Components/Signin/Signin';
 import Signup from './src/Components/Signup/Signup';
 import Menu from './src/Components/Menu';
 import ForgotPassword from './src/Components/Signin/ForgotPassword';
-import SurveyScreen from './src/Components/Main/SurveyScreen';
 
 import Contact from './src/Components/OpenMore/Contact';
 import Feedback from './src/Components/OpenMore/Feedback';
 import Instruction from './src/Components/OpenMore/Instruction';
 import SurveyHistory from './src/Components/OpenMore/SurveyHistory';
 import UserProfile from './src/Components/OpenMore/UserProfile';
+import UpdateProfile from './src/Components/OpenMore/UpdateProfile';
 
 
 StatusBar.setHidden(true);
@@ -25,12 +25,12 @@ const AppNavigator = createStackNavigator({
     signup: Signup,
     forgot: ForgotPassword,
     start: Menu,
-    survey: SurveyScreen,
     contact: Contact,
     feedback: Feedback,
     instruction: Instruction,
     surveyHistory: SurveyHistory,
-    userProfile: UserProfile
+    userProfile: UserProfile,
+    updateProfile: UpdateProfile
 });
 
 const AppContainer = createAppContainer(AppNavigator);

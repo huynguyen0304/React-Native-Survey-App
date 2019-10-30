@@ -1,11 +1,29 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
+// import MapView from 'react-native-maps';
 
 
 export default class Contact extends Component {
     render() {
         return (
             <View style={styles.wrapper}>
+                {/* <View style={styles.mapContainer}>
+                    <MapView
+                        style={{ width: width - 20, height: 250 }}
+                        initialRegion={{
+                            latitude: 37.78825,
+                            longitude: -122.4324,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        }}
+                    >
+                        <MapView.Marker
+                            coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+                            title="Khoa Pham"
+                            description="React Native Khoa pham training"
+                        />
+                    </MapView>
+                </View> */}
                 <View style={styles.infoContainer}>
                     <View style={styles.rowInfoContainer}>
                         <Image source={require("../../Asset/location.png")} style={styles.imageStyle} />
@@ -26,16 +44,27 @@ export default class Contact extends Component {
 }
 
 const styles = StyleSheet.create({
-    wrapper: { flex: 1, backgroundColor: '#ECECEC' },
-    infoContainer: {
-        padding: 10,
+    wrapper: { flex: 1, backgroundColor: '#F6F6F6' },
+    mapContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
         flex: 1,
-        backgroundColor: '#ECECEC',
+        backgroundColor: '#D7D7D7',
         margin: 10,
-        marginTop: 0,
         borderRadius: 2,
         shadowColor: '#3B5458',
         shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.2
+    },
+    infoContainer: {
+        padding: 10,
+        flex: 1,
+        backgroundColor: '#D7D7D7',
+        margin: 10,
+        marginTop: 0,
+        borderRadius: 5,
+        shadowColor: '#3B5458',
+        shadowOffset: { width: 3, height: 3 },
         shadowOpacity: 0.2
     },
     rowInfoContainer: {

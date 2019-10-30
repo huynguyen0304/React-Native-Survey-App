@@ -54,6 +54,8 @@ export default createMaterialBottomTabNavigator(
         barStyle: { 
             backgroundColor: '#1c9ad6',
             borderStyle: "solid",
+            borderTopWidth: 2,
+            borderColor: "#fff"
         }
     },
 );

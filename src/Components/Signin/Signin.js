@@ -5,22 +5,16 @@ import {
     TouchableOpacity, KeyboardAvoidingView
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-// import { LoginButton, AccessToken } from 'react-native-fbsdk';
-import FBSDK, { LoginManager } from 'react-native-fbsdk';
-import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
+// import AsyncStorage from '@react-native-community/async-storage';
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 
+const FBSDK = require('react-native-fbsdk');
 
-var FBLoginButton = require("./FBLoginButton");
+const {
+    LoginManager
+} = FBSDK;
 
-// LoginManager.logInWithPermissions(["public_profile"]).then(function (result) {
-//     if (result.isCancelled) {
-//         console.log("Signin canceled");
-//     } else {
-//         console.log("Signin success: " + result.grantedPermissions);
-//     }
-// }, function (error) {
-//     console.log("An error is occured:" + error)
-// })
 
 export default class Signin extends Component {
     constructor(props) {
@@ -28,30 +22,63 @@ export default class Signin extends Component {
         this.state = {
             username: "",
             password: "",
-            // isLogging: false
+            userInfo: {},
+            isLogging: false
         }
+    }
+
+    onSubmit = e => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
+    }
+
+    _signingoogle = async () => {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            this.setState({ userInfo });
+        } catch (error) {
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                // user cancelled the login flow
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                // operation (e.g. sign in) is in progress already
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                // play services not available or outdated
+            } else {
+                // some other error happened
+            }
+        }
+    }
+
+    _signinFB() {
+        LoginManager.logInWithPermissions(["public_profile"]).then(function (result) {
+            if (result.isCancelled) {
+                console.log("Signin canceled");
+            } else {
+                console.log("Signin success: " + result.grantedPermissions.toString());
+            }
+        }, function (error) {
+            console.log("An error is occured:" + error)
+        })
     }
 
     render() {
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
                 <View style={styles.container}>
-                    {/* <Image
-                        style={{ width: '50%', height: '20%', marginTop: '2%' }}
-                        source={require("../../Asset/CMC-Logo.png")} /> */}
-
-                    
-                    <TouchableOpacity style={styles.rowInfoContainer1} onPress={this.signingoogle}>
-                        <Image style={{ width: "11%", height: 33, marginRight: "10%", marginLeft: "7%", backgroundColor: '#fff' }} source={require("../../Asset/google.png")} />
+                    <TouchableOpacity style={styles.rowInfoContainer1} onPress={() => { this._signingoogle }}>
+                        <Icon name="logo-googleplus" size={23} style={styles.icon} />
                         <Text style={styles.buttonText}>Sign in with Google</Text>
                     </TouchableOpacity>
 
-                    {/* <TouchableOpacity style={styles.rowInfoContainer2} onPress={this.signinfacebook}>
-                        <Image style={{ width: "13%", height: 33, marginRight: "10%", marginLeft: "6%" }} source={require("../../Asset/facebook.png")} />
+                    <TouchableOpacity style={styles.rowInfoContainer2} onPress={() => { this._signinFB() }}>
+                        <Icon name="logo-facebook" size={23} style={styles.icon} />
                         <Text style={styles.buttonText}>Sign in with Facebook</Text>
-                    </TouchableOpacity> */}
-                    
-                    <FBLoginButton />
+                    </TouchableOpacity>
 
                     <Text style={styles.text}>Or Sign in with your account</Text>
 
@@ -75,7 +102,7 @@ export default class Signin extends Component {
                         value={this.state.password}
                     />
 
-                    <TouchableOpacity style={styles.button} onPress={this.onSubmit}>
+                    <TouchableOpacity style={styles.button} onPress={() => {this.onSubmit}}>
                         <Text style={styles.buttonText}>Sign in</Text>
                     </TouchableOpacity>
 
@@ -165,7 +192,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '80%',
         backgroundColor: '#DD0000',
-        borderRadius: 4,
+        borderRadius: 8,
         opacity: 0.8,
         borderWidth: 2,
         marginVertical: 7,
@@ -175,10 +202,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '80%',
         backgroundColor: '#205AA7',
-        borderRadius: 4,
+        borderRadius: 8,
         opacity: 0.8,
         borderWidth: 2,
         marginVertical: 7,
         paddingVertical: 12,
     },
+    icon: {
+        color: "#fff",
+        fontSize: 35,
+        paddingHorizontal: "7%",
+    }
 })

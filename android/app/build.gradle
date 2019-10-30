@@ -181,6 +181,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation project(':react-native-google-signin')
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
 
@@ -209,4 +210,5 @@ ext {
     buildToolsVersion           = "25.0.2"
     googlePlayServicesVersion   = "12.0.1"
     supportLibVersion           = "27.0.0"
+    androidMapsUtilsVersion     = "0.5+"
 }

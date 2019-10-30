@@ -25,7 +25,6 @@ export default class FBLoginButton extends Component {
                                 );
                                 new GraphRequestManager().addRequest(processRequest).start();
                             });
-                            this.props.navigation.navigate("start");
                         }
                     }}
                     onLogoutFinished={() => alert("User logged out")} />
