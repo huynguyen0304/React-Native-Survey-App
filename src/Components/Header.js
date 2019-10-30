@@ -3,7 +3,7 @@ import { Text, StyleSheet, View } from 'react-native';
 import { Header } from 'react-native-elements';
 
 
-export default class Header extends Component {
+export default class HeaderBar extends Component {
     render() {
         return (
             <View>

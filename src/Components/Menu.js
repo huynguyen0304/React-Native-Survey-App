@@ -19,7 +19,7 @@ export default createMaterialBottomTabNavigator(
                 tabBarIcon: ({ tintColor }) => (
                     <Icon name="ios-home" size={23} color={tintColor} />
                 )
-            } 
+            }, 
         },
         create: { 
             screen: CreateForm,

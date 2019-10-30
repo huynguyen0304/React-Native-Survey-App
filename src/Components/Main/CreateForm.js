@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CheckBox } from 'react-native-elements';
+import HeaderBar from './../Header';
 
 
 export default class CreateForm extends Component {
@@ -18,6 +19,8 @@ export default class CreateForm extends Component {
         this.addNewElement = false;
         this.index = 0;
     }
+
+    component
 
     render() {
         const signinJSX = (
@@ -37,6 +40,8 @@ export default class CreateForm extends Component {
 
         const createformJSX = (
             <View style={styles.container}>
+                {/* <HeaderBar /> */}
+
                 <ScrollView
                     ref={scrollView => this.scrollView = scrollView}
                     onContentSizeChange={() => {
@@ -77,10 +82,18 @@ export default class CreateForm extends Component {
                                     style={styles.questionText}
                                 />
                                 <View>
-                                    <TextInput 
-                                        placeholder="Choice text"
-                                        style={styles.choiceText}
-                                    />
+                                    <View style={styles.rowCheckbox}>
+                                        <CheckBox
+                                            checkedIcon='check-square-o'
+                                            uncheckedIcon='square-o'
+                                            checked={this.state.checked}
+                                        />
+
+                                        <TextInput 
+                                            placeholder="Choice text"
+                                            style={styles.choiceText}
+                                        />
+                                    </View>
 
                                     <TouchableOpacity style={styles.rowContainer}>
                                         <Icon style={styles.icon} name="ios-add-circle-outline" />
@@ -138,7 +151,7 @@ const styles = StyleSheet.create({
     },
     rowInfoContainer: {
         flexDirection: 'row',
-        justifyContent: "space-between",
+        justifyContent: "space-between"
     },
     button: {
         width: '35%',
@@ -163,6 +176,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#D7D7D7',
         margin: "2%",
+        height: "100%",
         marginTop: "0.5%",
         borderRadius: 5,
         shadowColor: '#3B5458',
@@ -175,17 +189,19 @@ const styles = StyleSheet.create({
         height: "40%",
         marginVertical: "1%",
         marginBottom: "3%",
+        borderRadius: 10
     },
     discriptionText:{
         backgroundColor: "#EEEEEE",
         height: "30%",
-        marginVertical: "1%"
+        marginVertical: "1%",
+        borderRadius: 10
     },
     questionText:{
         backgroundColor: "#EEEEEE",
         width: "88%",
-        height: "23%",
-        marginVertical: "1%"
+        marginVertical: "1%",
+        borderRadius: 10
     },
     icon: {
         fontSize: 25
@@ -193,6 +209,10 @@ const styles = StyleSheet.create({
     choiceText: {
         paddingVertical: 5,
         backgroundColor: "#EEEEEE",
+        width: "78%",
+        height: "70%",
+        borderRadius: 10,
+        alignSelf: "center"
     },
     rowContainer: {
         flexDirection: 'row',
@@ -211,11 +231,18 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         backgroundColor: "#D7D7D7",
         width: "47%",
+        height: "8%",
+        alignItems: "center",
         margin: "2%",
-        paddingVertical: "1%",
         paddingHorizontal: "4%",
         borderWidth: 2,
         borderColor: "#000000",
         borderRadius: 10
+    },
+    rowCheckbox: {
+        flexDirection: 'row',
+        justifyContent: "center",
+        width: "100%",
+        paddingVertical: "2%",
     }
 })
