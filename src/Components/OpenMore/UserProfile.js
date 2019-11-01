@@ -36,7 +36,10 @@ export default class CreateForm extends Component {
 
         return (
             <View style={styles.container}>
-                { indexJSX }
+                { 
+                    //indexJSX
+                    profileJSX
+                }
             </View>
         )
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import Home from './src/Components/Home';
@@ -15,26 +15,40 @@ import Instruction from './src/Components/OpenMore/Instruction';
 import SurveyHistory from './src/Components/OpenMore/SurveyHistory';
 import UserProfile from './src/Components/OpenMore/UserProfile';
 import UpdateProfile from './src/Components/OpenMore/UpdateProfile';
+import AuthLoadingScreen from './src/Components/AuthLoadingScreen';
 
 
 StatusBar.setHidden(true);
 
-const AppNavigator = createStackNavigator({
+const AppNavigator = iSigned => {
+    return  createStackNavigator({
     home: Home,
-    signin: Signin,
-    signup: Signup,
-    forgot: ForgotPassword,
     start: Menu,
-    contact: Contact,
     feedback: Feedback,
-    instruction: Instruction,
     surveyHistory: SurveyHistory,
     userProfile: UserProfile,
     updateProfile: UpdateProfile
+})
+};
+
+const AuthNavigator = createStackNavigator({
+    signin: Signin,
+    signup: Signup,
+    forgot: ForgotPassword,
+    instruction: Instruction,
+    contact: Contact,
 });
 
-const AppContainer = createAppContainer(AppNavigator);
-
+const AppContainer = createAppContainer(createSwitchNavigator(
+    {
+        AuthLoading: AuthLoadingScreen,
+        App: AppNavigator,
+        Auth: AuthNavigator
+    },
+    {
+        initialRouteName: 'AuthLoading'
+    }
+));
 export default class App extends Component {
     render() {
         return (
@@ -42,3 +56,16 @@ export default class App extends Component {
         );
     }
 }
+
+/*
+export default createAppContainer(createSwitchNavigator(
+    {
+        AuthLoading: AuthLoadingScreen,
+        App: AppNavigator,
+        Auth: AuthNavigator
+    },
+    {
+        initialRouteName: 'App'
+    }
+))
+*/

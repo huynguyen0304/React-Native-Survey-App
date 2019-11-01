@@ -20,8 +20,6 @@ export default class CreateForm extends Component {
         this.index = 0;
     }
 
-    component
-
     render() {
         const signinJSX = (
             <View style={styles.wrapper}>
@@ -44,9 +42,6 @@ export default class CreateForm extends Component {
 
                 <ScrollView
                     ref={scrollView => this.scrollView = scrollView}
-                    onContentSizeChange={() => {
-                        this.addNewElement && this.scrollView.scrollToEnd();
-                    }}
                 >
                     <View>
                         <View style={styles.header}>
