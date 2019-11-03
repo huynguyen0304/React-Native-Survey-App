@@ -17,6 +17,7 @@ import UserProfile from './src/Components/OpenMore/UserProfile';
 import UpdateProfile from './src/Components/OpenMore/UpdateProfile';
 import AuthLoadingScreen from './src/Components/AuthLoadingScreen';
 import CreateForm from './src/Components/Main/CreateForm';
+import QA from './src/Components/Main/QA';
 import Reports from './src/Components/Main/Reports';
 
 
@@ -25,6 +26,8 @@ StatusBar.setHidden(true);
 const AppNavigator = createStackNavigator({
     home: Home,
     start: Menu,
+    createform: CreateForm,
+    qa: QA,
     surveyHistory: SurveyHistory,
     userProfile: UserProfile,
     contact: Contact,
@@ -37,7 +40,6 @@ const AuthNavigator = createStackNavigator({
     signin: Signin,
     signup: Signup,
     forgot: ForgotPassword,
-    createform: CreateForm,
     reports: Reports
 });
 

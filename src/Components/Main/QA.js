@@ -4,50 +4,62 @@ import {
     ScrollView, Image, TextInput
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { CheckBox } from 'react-native-elements';
 import HeaderBar from './../Header';
 
 
 export default class CreateForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            valueArray: [],
+            disabled: false
+        };
+        this.addNewElement = false;
+        this.index = 0;
     }
 
     render() {
         return (
-            <ScrollView style={styles.container}>
-                <View>
-                    <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Create your Survey</Text>
-                    </View>
+            <View style={styles.container}>
+                <ScrollView
+                    ref={scrollView => this.scrollView = scrollView}
+                >
+                    <View>
+                        <View style={styles.header}>
+                            <Text style={styles.headerTitle}>Create your Survey</Text>
+                        </View>
 
-                    <View style={styles.form}>
-                        <TextInput
-                            style={styles.titleText}
-                            placeholder="SURVEY TITLE"
-                            value={this.state.title}
-                            maxLength={100}
-                            underlineColorAndroid='transparent'
-                            placeholderTextColor="white"
-                            selectionColor="#000000"
-                            onChangeText={(title) => { this.setState({ title }) }}
-                        />
-                        <TextInput
-                            style={styles.discriptionText}
-                            placeholder="Discription"
-                            maxLength={1000}
-                            underlineColorAndroid='transparent'
-                            placeholderTextColor="white"
-                            value={this.state.discription}
-                            onChangeText={(discription) => { this.setState({ discription }) }}
-                        />
+                        <View style={styles.form}>
+                            <View>
+                                <TextInput
+                                    placeholder="Question title ?"
+                                    style={styles.questionText}
+                                />
+                                <View>
+                                    <View style={styles.rowCheckbox}>
+                                        <CheckBox
+                                            checkedIcon='check-square-o'
+                                            uncheckedIcon='square-o'
+                                            checked={this.state.checked}
+                                        />
+
+                                        <TextInput
+                                            placeholder="Choice text"
+                                            style={styles.choiceText}
+                                        />
+                                    </View>
+
+                                    <TouchableOpacity style={styles.rowContainer}>
+                                        <Icon style={styles.icon} name="ios-add-circle-outline" />
+                                        <Text>Add more choice</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
                     </View>
-                    <TouchableOpacity style={styles.rowAddQuestion} onPress={() => { this.props.navigation.navigate("qa") }}>
-                        <Icon style={styles.icon} name="ios-add-circle-outline" />
-                        <Text style={{ paddingVertical: "3%" }}>Add Question</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
         )
     }
 }
@@ -135,8 +147,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     icon: {
-        fontSize: 25,
-        paddingVertical: "3%"
+        fontSize: 25
     },
     choiceText: {
         paddingVertical: 5,
@@ -162,14 +173,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-between",
         backgroundColor: "#D7D7D7",
-        width: "40%",
-        height: "15%",
+        width: "47%",
+        height: "8%",
         alignItems: "center",
         margin: "2%",
         paddingHorizontal: "4%",
         borderWidth: 2,
         borderColor: "#000000",
-        borderRadius: 10,
+        borderRadius: 10
     },
     rowCheckbox: {
         flexDirection: 'row',

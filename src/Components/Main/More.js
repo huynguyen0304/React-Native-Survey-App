@@ -6,7 +6,7 @@ export default class More extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isSignin: false
+            
         }
     }
 
