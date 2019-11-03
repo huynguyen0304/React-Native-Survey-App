@@ -13,19 +13,6 @@ export default class More extends Component {
     handleSignout() {}
 
     render() {
-        const signoutJSX = (
-            <View style={styles.rowInfoContainer}>
-                <Image source={require("../../Asset/signout.png")} style={styles.iconStyle} />
-                <TouchableOpacity  onPress={this.handleSignout}>
-                    <Text style={{ color: '#FF0000', fontWeight: 'bold' }}>Sign Out</Text>
-                </TouchableOpacity>
-            </View>
-        )
-
-        const notsigninJSX = ( <View></View> )
-
-        const indexJSX = this.state.isSignin ? signoutJSX : notsigninJSX;
-
         return (
             <ScrollView style={styles.wrapper}>
                 <View style={styles.header}>
@@ -33,13 +20,13 @@ export default class More extends Component {
                 </View>
                 <View style={styles.rowInfoContainer}>
                     <Image source={require("../../Asset/account.png")} style={styles.iconStyle} />
-                    <TouchableOpacity onPress={() => { this.props.navigation.navigate("userProfile") }}>
+                    <TouchableOpacity onPress={() => { this.props.navigation.navigate("Auth") }}>
                         <Text style={styles.infoText}>My Profile</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.rowInfoContainer}>
                     <Image source={require("../../Asset/history-survey.png")} style={styles.iconStyle} />
-                    <TouchableOpacity onPress={() => { this.props.navigation.navigate("surveyHistory") }}>
+                    <TouchableOpacity onPress={() => { this.props.navigation.navigate("Auth") }}>
                         <Text style={styles.infoText}>My History Survey Form</Text>
                     </TouchableOpacity>
                 </View>
@@ -51,7 +38,7 @@ export default class More extends Component {
                 </View>
                 <View style={styles.rowInfoContainer}>
                     <Image source={require("../../Asset/feedback.png")} style={styles.iconStyle} />
-                    <TouchableOpacity onPress={() => { this.props.navigation.navigate("feedback") }}>
+                    <TouchableOpacity onPress={() => { this.props.navigation.navigate("Auth") }}>
                         <Text style={styles.infoText}>Feedback to us</Text>
                     </TouchableOpacity>
                 </View>
@@ -61,7 +48,6 @@ export default class More extends Component {
                         <Text style={styles.infoText}>Contact Us</Text>
                     </TouchableOpacity>
                 </View>
-                { indexJSX }
             </ScrollView>
         )
     }

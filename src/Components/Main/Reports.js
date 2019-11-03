@@ -6,37 +6,14 @@ export default class CreateForm extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isSignin: false
+            
         }
     }
 
     render() {
-        const signinJSX = (
-            <View style={styles.wrapper}>
-                <Text style={styles.text}>Look empty here... Sign in and they'll appear.</Text>
-                <View style={styles.rowInfoContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => {this.props.navigation.navigate("signin")}}>
-                        <Text style={styles.buttonText}>Sign In</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.button} onPress={() => {this.props.navigation.navigate("signup")}}>
-                        <Text style={styles.buttonText}>Sign Up</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
-
-        const reportJSX = (
-            <View>
-                <Text>This ability will be coming soon! </Text>
-            </View>
-        )
-
-        const indexJSX = this.state.isSignin ? reportJSX : signinJSX;
-
         return (
             <View style={styles.container}>
-                { indexJSX }
+                <Text>This ability will be coming soon! </Text>
             </View>
         )
     }

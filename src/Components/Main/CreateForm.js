@@ -12,7 +12,6 @@ export default class CreateForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isSignin: true,
             valueArray: [],
             disabled: false
         };
@@ -21,25 +20,8 @@ export default class CreateForm extends Component {
     }
 
     render() {
-        const signinJSX = (
-            <View style={styles.wrapper}>
-                <Text style={styles.text}>Sign in or Sign up and then you can create survey-form by yourself.</Text>
-                <View style={styles.rowInfoContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate("signin") }}>
-                        <Text style={styles.buttonText}>Sign In</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate("signup") }}>
-                        <Text style={styles.buttonText}>Sign Up</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
-
-        const createformJSX = (
+        return (
             <View style={styles.container}>
-                {/* <HeaderBar /> */}
-
                 <ScrollView
                     ref={scrollView => this.scrollView = scrollView}
                 >
@@ -49,7 +31,7 @@ export default class CreateForm extends Component {
                         </View>
 
                         <View style={styles.form}>
-                            <TextInput 
+                            <TextInput
                                 style={styles.titleText}
                                 placeholder="SURVEY TITLE"
                                 value={this.state.title}
@@ -57,22 +39,22 @@ export default class CreateForm extends Component {
                                 underlineColorAndroid='transparent'
                                 placeholderTextColor="white"
                                 selectionColor="#000000"
-                                onChangeText={(title) => {this.setState({title})}}
+                                onChangeText={(title) => { this.setState({ title }) }}
                             />
-                            <TextInput 
+                            <TextInput
                                 style={styles.discriptionText}
                                 placeholder="Discription"
                                 maxLength={100}
                                 underlineColorAndroid='transparent'
                                 placeholderTextColor="white"
                                 value={this.state.discription}
-                                onChangeText={(discription) => {this.setState({discription})}}
+                                onChangeText={(discription) => { this.setState({ discription }) }}
                             />
                         </View>
 
                         <View style={styles.form}>
                             <View>
-                                <TextInput 
+                                <TextInput
                                     placeholder="Question title ?"
                                     style={styles.questionText}
                                 />
@@ -84,7 +66,7 @@ export default class CreateForm extends Component {
                                             checked={this.state.checked}
                                         />
 
-                                        <TextInput 
+                                        <TextInput
                                             placeholder="Choice text"
                                             style={styles.choiceText}
                                         />
@@ -105,14 +87,6 @@ export default class CreateForm extends Component {
                 </ScrollView>
             </View>
         )
-
-        const indexJSX = this.state.isSignin ? createformJSX : signinJSX;
-
-        return (
-            <View style={styles.container}>
-                {indexJSX}
-            </View>
-        )
     }
 }
 
@@ -120,18 +94,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    header: { 
-        backgroundColor: '#1c9ad6', 
-        alignItems: 'center', 
-        flexDirection: 'row', 
+    header: {
+        backgroundColor: '#1c9ad6',
+        alignItems: 'center',
+        flexDirection: 'row',
         paddingHorizontal: 10,
-        paddingVertical: "3%" 
+        paddingVertical: "3%"
     },
-    headerTitle: { 
-        fontFamily: 'Avenir', 
-        color: '#fff', fontSize: 30, 
-        marginLeft: '3%', 
-        fontWeight: 'bold' 
+    headerTitle: {
+        fontFamily: 'Avenir',
+        color: '#fff', fontSize: 30,
+        marginLeft: '3%',
+        fontWeight: 'bold'
     },
     wrapper: {
         flex: 1,
@@ -166,7 +140,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15
     },
 
-    form:{
+    form: {
         padding: 7,
         flex: 1,
         backgroundColor: '#D7D7D7',
@@ -178,7 +152,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 3, height: 3 },
         shadowOpacity: 0.2
     },
-    titleText:{
+    titleText: {
         backgroundColor: "#EEEEEE",
         width: "60%",
         height: "40%",
@@ -186,13 +160,13 @@ const styles = StyleSheet.create({
         marginBottom: "3%",
         borderRadius: 10
     },
-    discriptionText:{
+    discriptionText: {
         backgroundColor: "#EEEEEE",
         height: "30%",
         marginVertical: "1%",
         borderRadius: 10
     },
-    questionText:{
+    questionText: {
         backgroundColor: "#EEEEEE",
         width: "88%",
         marginVertical: "1%",

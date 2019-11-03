@@ -16,56 +16,49 @@ import SurveyHistory from './src/Components/OpenMore/SurveyHistory';
 import UserProfile from './src/Components/OpenMore/UserProfile';
 import UpdateProfile from './src/Components/OpenMore/UpdateProfile';
 import AuthLoadingScreen from './src/Components/AuthLoadingScreen';
+import CreateForm from './src/Components/Main/CreateForm';
+import Reports from './src/Components/Main/Reports';
 
 
 StatusBar.setHidden(true);
 
-const AppNavigator = iSigned => {
-    return  createStackNavigator({
+const AppNavigator = createStackNavigator({
     home: Home,
     start: Menu,
-    feedback: Feedback,
     surveyHistory: SurveyHistory,
     userProfile: UserProfile,
+    contact: Contact,
+    instruction: Instruction,
+    feedback: Feedback,
     updateProfile: UpdateProfile
-})
-};
+});
 
 const AuthNavigator = createStackNavigator({
     signin: Signin,
     signup: Signup,
     forgot: ForgotPassword,
-    instruction: Instruction,
-    contact: Contact,
+    createform: CreateForm,
+    reports: Reports
 });
 
-const AppContainer = createAppContainer(createSwitchNavigator(
-    {
-        AuthLoading: AuthLoadingScreen,
-        App: AppNavigator,
-        Auth: AuthNavigator
-    },
-    {
-        initialRouteName: 'AuthLoading'
-    }
-));
-export default class App extends Component {
-    render() {
-        return (
-            <AppContainer />
-        );
-    }
-}
+// const AppContainer = createAppContainer(createSwitchNavigator(
+//     {
+//         AuthLoading: AuthLoadingScreen,
+//         App: AppNavigator,
+//         Auth: AuthNavigator
+//     },
+//     {
+//         initialRouteName: 'Auth'
+//     }
+// ));
 
-/*
 export default createAppContainer(createSwitchNavigator(
     {
-        AuthLoading: AuthLoadingScreen,
-        App: AppNavigator,
-        Auth: AuthNavigator
+      AuthLoading: AuthLoadingScreen,
+      App: AppNavigator,
+      Auth: AuthNavigator,
     },
     {
-        initialRouteName: 'App'
+      initialRouteName: 'App',
     }
-))
-*/
+  ));

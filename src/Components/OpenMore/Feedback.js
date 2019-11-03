@@ -5,37 +5,14 @@ export default class Feedback extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isSignin: false
+            
         }
     }
 
     render() {
-        const signinJSX = (
-            <View style={styles.wrapper}>
-                <Text style={styles.text}>Sign in or Sign up and tell us what happen.</Text>
-                <View style={styles.rowInfoContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => {this.props.navigation.navigate("signin")}}>
-                        <Text style={styles.buttonText}>Sign In</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.button} onPress={() => {this.props.navigation.navigate("signup")}}>
-                        <Text style={styles.buttonText}>Sign Up</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
-
-        const feedbackJSX = (
-            <View>
-                <Text>This ability will be coming soon! </Text>
-            </View>
-        )
-
-        const indexJSX = this.state.isSignin ? feedbackJSX : signinJSX;
-
         return (
             <View style={styles.container}>
-                { indexJSX }
+                <Text>This ability will be coming soon! </Text>
             </View>
         )
     }

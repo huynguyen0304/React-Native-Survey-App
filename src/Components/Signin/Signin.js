@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {LoadingIndicator} from '../AuthLoadingScreen';
 // import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 
@@ -15,9 +14,9 @@ const FBSDK = require('react-native-fbsdk');
 const {
     LoginManager
 } = FBSDK;
-const userTest={
-    username:"meomeo",
-    pass:"1123"
+const userTest = {
+    username: "meomeo",
+    pass: "1123"
 }
 
 export default class Signin extends Component {
@@ -26,10 +25,10 @@ export default class Signin extends Component {
         this.state = {
             username: "",
             password: "",
-            historyRoute:"",
+            historyRoute: "",
             userInfo: {},
             isLogging: false,
-            loading:false
+            loading: false
         }
     }
 
@@ -73,100 +72,97 @@ export default class Signin extends Component {
     }
 
     render() {
-        const LoadingComponents= <LoadingIndicator/>
-        const MainComponents = (<KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.rowInfoContainer1} onPress={() => { this._signingoogle }}>
-                <Icon name="logo-googleplus" size={23} style={styles.icon} />
-                <Text style={styles.buttonText}>Sign in with Google</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.rowInfoContainer2} onPress={() => { this._signinFB() }}>
-                <Icon name="logo-facebook" size={23} style={styles.icon} />
-                <Text style={styles.buttonText}>Sign in with Facebook</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.text}>Or Sign in with your account</Text>
-
-            <TextInput style={styles.inputBox}
-                onChangeText={(username) => this.setState({ username })}
-                underlineColorAndroid='transparent'
-                placeholder="Username"
-                placeholderTextColor="white"
-                selectionColor="#fff"
-                value={this.state.username}
-                onSubmitEditing={() => this.password.focus()}
-            />
-
-            <TextInput style={styles.inputBox}
-                onChangeText={(password) => this.setState({ password })}
-                underlineColorAndroid='transparent'
-                placeholder="Password"
-                placeholderTextColor="white"
-                secureTextEntry={true}
-                ref={(input) => this.password = input}
-                value={this.state.password}
-            />
-
-            <TouchableOpacity style={styles.button} onPress={this.onSubmit}>
-                <Text style={styles.buttonText}>Sign in</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => this.props.navigation.navigate("forgot")}>
-                <Text style={styles.support}>Forgot your Password?</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("signup")}>
-                <Text style={styles.support}>Don't have account?</Text>
-            </TouchableOpacity>
-
-        </View>
-    </KeyboardAvoidingView>);
-        const Components = this.state.loading ? LoadingComponents:MainComponents;
         return (
-            {Components}
+            <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
+                <View style={styles.container}>
+                    <TouchableOpacity style={styles.rowInfoContainer1} onPress={() => { this._signingoogle }}>
+                        <Icon name="logo-googleplus" size={23} style={styles.icon} />
+                        <Text style={styles.buttonText}>Sign in with Google</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.rowInfoContainer2} onPress={() => { this._signinFB() }}>
+                        <Icon name="logo-facebook" size={23} style={styles.icon} />
+                        <Text style={styles.buttonText}>Sign in with Facebook</Text>
+                    </TouchableOpacity>
+
+                    <Text style={styles.text}>Or Sign in with your account</Text>
+
+                    <TextInput style={styles.inputBox}
+                        onChangeText={(username) => this.setState({ username })}
+                        underlineColorAndroid='transparent'
+                        placeholder="Username"
+                        placeholderTextColor="white"
+                        selectionColor="#fff"
+                        value={this.state.username}
+                        onSubmitEditing={() => this.password.focus()}
+                    />
+
+                    <TextInput style={styles.inputBox}
+                        onChangeText={(password) => this.setState({ password })}
+                        underlineColorAndroid='transparent'
+                        placeholder="Password"
+                        placeholderTextColor="white"
+                        secureTextEntry={true}
+                        ref={(input) => this.password = input}
+                        value={this.state.password}
+                    />
+
+                    <TouchableOpacity style={styles.button} onPress={this.onSubmit}>
+                        <Text style={styles.buttonText}>Sign in</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("forgot")}>
+                        <Text style={styles.support}>Forgot your Password?</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate("signup")}>
+                        <Text style={styles.support}>Don't have account?</Text>
+                    </TouchableOpacity>
+
+                </View>
+            </KeyboardAvoidingView>
         )
     }
 
     onSubmit = () => {
-        this.setState({loading:true})
-        setTimeout(()=>{
-            if(this.state.username===userTest.username&&this.state.password===userTest.pass){
+        this.setState({ loading: true })
+        setTimeout(() => {
+            if (this.state.username === userTest.username && this.state.password === userTest.pass) {
                 console.log("ok baby")
-                this.setState({loading:false})
-                AsyncStorage.setItem("Authchecker",true);
+                this.setState({ loading: false })
+                AsyncStorage.setItem("Authchecker", true);
                 this.props.navigation.navigate("App")
 
             }
-            else{
-                this.setState({loading:false})
+            else {
+                this.setState({ loading: false })
                 alert("Username or Password is incorrect");
 
             }
-        },2000)
-      /*  fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/account", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: this.state.username,
-                password: this.state.password
-            })
-        })
-        .then(response => console.log(response.json()))
-        .then((response) => {
-            console.log(response)
-            if (response) {
-                AsyncStorage.setItem("Auth",response)
-                this.props.navigation.navigate("start");
-            }
-            else {
-                alert("Username or Password is incorrect");
-            }
-        })
-        */
+        }, 2000)
+        /*  fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/account", {
+              method: 'POST',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-type': 'application/json'
+              },
+              body: JSON.stringify({
+                  username: this.state.username,
+                  password: this.state.password
+              })
+          })
+          .then(response => console.log(response.json()))
+          .then((response) => {
+              console.log(response)
+              if (response) {
+                  AsyncStorage.setItem("Auth",response)
+                  this.props.navigation.navigate("start");
+              }
+              else {
+                  alert("Username or Password is incorrect");
+              }
+          })
+          */
     }
 }
 

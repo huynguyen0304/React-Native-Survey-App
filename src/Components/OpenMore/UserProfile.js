@@ -6,7 +6,7 @@ export default class CreateForm extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isSignin: false
+            // isSignin: false
         }
     }
 
@@ -36,10 +36,7 @@ export default class CreateForm extends Component {
 
         return (
             <View style={styles.container}>
-                { 
-                    //indexJSX
-                    profileJSX
-                }
+                <Text>This ability will be coming soon! </Text>
             </View>
         )
     }
