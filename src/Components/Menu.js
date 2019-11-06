@@ -53,9 +53,9 @@ export default createMaterialBottomTabNavigator(
         initialRouteName: 'main',
         barStyle: { 
             backgroundColor: '#1c9ad6',
-            borderStyle: "solid",
-            borderTopWidth: 2,
-            borderColor: "#fff"
+            // borderStyle: "solid",
+            // borderTopWidth: 2,
+            // borderColor: "#000000"
         }
     },
 );

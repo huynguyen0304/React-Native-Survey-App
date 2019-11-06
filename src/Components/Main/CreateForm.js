@@ -4,7 +4,6 @@ import {
     ScrollView, Image, TextInput
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import HeaderBar from './../Header';
 
 
 export default class CreateForm extends Component {
@@ -15,29 +14,35 @@ export default class CreateForm extends Component {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
-                <View>
+            <ScrollView>
+                <View style={styles.container}>
                     <View style={styles.header}>
                         <Text style={styles.headerTitle}>Create your Survey</Text>
                     </View>
 
                     <View style={styles.form}>
+                        <Text style={{
+                            fontSize: 16,
+                            fontWeight: "600"
+                        }}>SURVEY TITLE:</Text>
                         <TextInput
                             style={styles.titleText}
-                            placeholder="SURVEY TITLE"
                             value={this.state.title}
                             maxLength={100}
                             underlineColorAndroid='transparent'
-                            placeholderTextColor="white"
-                            selectionColor="#000000"
+                            placeholderTextColor="#000000"
                             onChangeText={(title) => { this.setState({ title }) }}
                         />
+
+                        <Text style={{
+                            fontSize: 16,
+                            fontWeight: "500"
+                        }}>Discription:</Text>
                         <TextInput
                             style={styles.discriptionText}
-                            placeholder="Discription"
                             maxLength={1000}
                             underlineColorAndroid='transparent'
-                            placeholderTextColor="white"
+                            placeholderTextColor="#000000"
                             value={this.state.discription}
                             onChangeText={(discription) => { this.setState({ discription }) }}
                         />
@@ -61,7 +66,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         paddingHorizontal: 10,
-        paddingVertical: "3%"
+        paddingVertical: "5%"
     },
     headerTitle: {
         fontFamily: 'Avenir',
@@ -107,7 +112,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#D7D7D7',
         margin: "2%",
-        height: "100%",
         marginTop: "0.5%",
         borderRadius: 5,
         shadowColor: '#3B5458',
@@ -117,20 +121,14 @@ const styles = StyleSheet.create({
     titleText: {
         backgroundColor: "#EEEEEE",
         width: "60%",
-        height: "40%",
+        height: "25%",
         marginVertical: "1%",
         marginBottom: "3%",
         borderRadius: 10
     },
     discriptionText: {
         backgroundColor: "#EEEEEE",
-        height: "30%",
-        marginVertical: "1%",
-        borderRadius: 10
-    },
-    questionText: {
-        backgroundColor: "#EEEEEE",
-        width: "88%",
+        height: "100%",
         marginVertical: "1%",
         borderRadius: 10
     },
@@ -138,43 +136,18 @@ const styles = StyleSheet.create({
         fontSize: 25,
         paddingVertical: "3%"
     },
-    choiceText: {
-        paddingVertical: 5,
-        backgroundColor: "#EEEEEE",
-        width: "78%",
-        height: "70%",
-        borderRadius: 10,
-        alignSelf: "center"
-    },
-    rowContainer: {
-        flexDirection: 'row',
-        justifyContent: "space-between",
-        backgroundColor: "#1c9ad6",
-        width: "47%",
-        paddingVertical: "2%",
-        paddingHorizontal: "4%",
-        marginTop: "3%",
-        borderWidth: 2,
-        borderColor: "#000000",
-        borderRadius: 10
-    },
+    
     rowAddQuestion: {
         flexDirection: 'row',
         justifyContent: "space-between",
         backgroundColor: "#D7D7D7",
         width: "40%",
         height: "15%",
-        alignItems: "center",
+        alignSelf: "center",
         margin: "2%",
         paddingHorizontal: "4%",
         borderWidth: 2,
         borderColor: "#000000",
         borderRadius: 10,
-    },
-    rowCheckbox: {
-        flexDirection: 'row',
-        justifyContent: "center",
-        width: "100%",
-        paddingVertical: "2%",
     }
 })

@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         flexDirection: 'row', 
         paddingHorizontal: 10,
-        paddingVertical: "3%" 
+        paddingVertical: "5%" 
     },
     headerTitle: { 
         fontFamily: 'Avenir', 
