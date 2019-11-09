@@ -59,7 +59,8 @@ export default class CreateForm extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        height: "100%"
     },
     header: {
         backgroundColor: '#1c9ad6',
@@ -120,17 +121,21 @@ const styles = StyleSheet.create({
     },
     titleText: {
         backgroundColor: "#EEEEEE",
-        width: "60%",
-        height: "25%",
+        width: "70%",
+        height: "20%",
         marginVertical: "1%",
         marginBottom: "3%",
-        borderRadius: 10
+        marginHorizontal: "3%",
+        borderColor: "#000000",
+        borderWidth: 1
     },
     discriptionText: {
         backgroundColor: "#EEEEEE",
-        height: "100%",
+        height: "30%",
         marginVertical: "1%",
-        borderRadius: 10
+        marginHorizontal: "3%",
+        borderColor: "#000000",
+        borderWidth: 1
     },
     icon: {
         fontSize: 25,
