@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     Text, StyleSheet, View, TouchableOpacity,
-    ScrollView, Image, TextInput
+    ScrollView, TextInput
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -9,10 +9,39 @@ import Icon from 'react-native-vector-icons/Ionicons';
 export default class CreateForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            title: "",
+            discription: "",
+        };
+    }
+
+    handleSubmit = () => {
+        // fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/account", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         title: this.state.title,
+        //         discription: this.state.discription
+        //     })
+        // })
+        // .then(response => console.log(response.json()))
+        // .then((response) => {
+        //     console.log(response)
+        //     if (response) {
+        //         AsyncStorage.setItem("Auth", response)
+        //         this.props.navigation.navigate("start");
+        //     }
+        //     else {
+        //         alert("Username or Password is incorrect");
+        //     }
+        // })
     }
 
     render() {
+        const { navigation } = this.props;
         return (
             <ScrollView>
                 <View style={styles.container}>
@@ -24,7 +53,7 @@ export default class CreateForm extends Component {
                         <Text style={{
                             fontSize: 16,
                             fontWeight: "600"
-                        }}>SURVEY TITLE:</Text>
+                        }}>Survey title:</Text>
                         <TextInput
                             style={styles.titleText}
                             value={this.state.title}
@@ -47,9 +76,29 @@ export default class CreateForm extends Component {
                             onChangeText={(discription) => { this.setState({ discription }) }}
                         />
                     </View>
+
+                    <View style={styles.form}>
+                        <View>
+                            <Text>
+                                {JSON.stringify(navigation.getParam("question", "Nothing here, click Add Question below"))}
+                            </Text>
+                        </View>
+                    </View>
+
                     <TouchableOpacity style={styles.rowAddQuestion} onPress={() => { this.props.navigation.navigate("qa") }}>
                         <Icon style={styles.icon} name="ios-add-circle-outline" />
                         <Text style={{ paddingVertical: "3%" }}>Add Question</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View>
+                    <TouchableOpacity onPress={this.handleSubmit} style={styles.buttonText}>
+                        <Text style={{
+                            paddingVertical: "3%",
+                            alignSelf: "center",
+                            fontSize: 18,
+                            fontWeight: "700"
+                        }}>SUBMIT</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -60,7 +109,6 @@ export default class CreateForm extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: "100%"
     },
     header: {
         backgroundColor: '#1c9ad6',
@@ -74,12 +122,6 @@ const styles = StyleSheet.create({
         color: '#fff', fontSize: 30,
         marginLeft: '3%',
         fontWeight: 'bold'
-    },
-    wrapper: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: 'center',
-        backgroundColor: '#D7D7D7'
     },
     text: {
         width: "70%",
@@ -141,18 +183,31 @@ const styles = StyleSheet.create({
         fontSize: 25,
         paddingVertical: "3%"
     },
-    
+
     rowAddQuestion: {
         flexDirection: 'row',
         justifyContent: "space-between",
         backgroundColor: "#D7D7D7",
         width: "40%",
-        height: "15%",
-        alignSelf: "center",
+        height: "10%",
         margin: "2%",
         paddingHorizontal: "4%",
         borderWidth: 2,
         borderColor: "#000000",
         borderRadius: 10,
+    },
+
+    buttonText: {
+        fontWeight: 'bold',
+        color: '#ffffff',
+        backgroundColor: "#1c9ad6",
+        width: "30%",
+        paddingHorizontal: 15,
+        paddingVertical: "2%",
+        borderRadius: 10,
+        alignSelf: "center",
+        marginTop: "2%",
+        borderWidth: 2,
+        borderColor: "#000000",
     }
 })
