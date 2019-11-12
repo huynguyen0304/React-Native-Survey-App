@@ -19,6 +19,7 @@ import AuthLoadingScreen from './src/Components/AuthLoadingScreen';
 import CreateForm from './src/Components/Main/CreateForm';
 import QA from './src/Components/Main/QA';
 import Reports from './src/Components/Main/Reports';
+import Results from './src/Components/Main/Results';
 
 
 StatusBar.setHidden(true);
@@ -40,7 +41,8 @@ const AuthNavigator = createStackNavigator({
     signin: Signin,
     signup: Signup,
     forgot: ForgotPassword,
-    reports: Reports
+    reports: Reports,
+    results: Results
 });
 
 // const AppContainer = createAppContainer(createSwitchNavigator(

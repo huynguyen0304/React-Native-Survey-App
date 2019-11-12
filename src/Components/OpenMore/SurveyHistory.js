@@ -49,7 +49,7 @@ export default class SurveyHistory extends Component {
             :
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Reports</Text>
+                    <Text style={styles.headerTitle}>History Form</Text>
                 </View>
                 <View>
                     <FlatList
