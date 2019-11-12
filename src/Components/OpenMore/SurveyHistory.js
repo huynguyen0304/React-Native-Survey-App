@@ -1,43 +1,65 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import {
+    Text,
+    StyleSheet,
+    View,
+    TouchableOpacity,
+    ScrollView, FlatList, ActivityIndicator
+} from 'react-native';
 
 
-export default class CreateForm extends Component {
-    constructor(props){
+export default class SurveyHistory extends Component {
+    constructor(props) {
         super(props);
         this.state = {
-            isSignin: false
+            dataSource: [],
+            isLoading: true
         }
     }
 
-    render() {
-        const signinJSX = (
-            <View style={styles.wrapper}>
-                <Text style={styles.text}>Look empty here... Sign in and they'll appear.</Text>
-                <View style={styles.rowInfoContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => {this.props.navigation.navigate("signin")}}>
-                        <Text style={styles.buttonText}>Sign In</Text>
-                    </TouchableOpacity>
+    renderItem = ({ item }) => {
+        return (
+            <View style={styles.rowItem}>
+                <TouchableOpacity onPress={() => {alert("aloooo")}}>
+                    <Text>Title: {item.title}</Text>
+                    <Text>Open: {item.created_time}</Text>
+                    <Text>Last modified: {item.modified_time}</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 
-                    <TouchableOpacity style={styles.button} onPress={() => {this.props.navigation.navigate("signup")}}>
-                        <Text style={styles.buttonText}>Sign Up</Text>
-                    </TouchableOpacity>
+    componentDidMount() {
+        fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/db")
+            .then((res) => res.json())
+            .then((responseJson) => {
+                this.setState({
+                    dataSource: responseJson.form,
+                    isLoading: false
+                })
+            })
+    }
+
+    render() {
+        return (
+            this.state.isLoading ? 
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator size="large" color="#1c9ad6" animating />
+            </View>
+            :
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.headerTitle}>Reports</Text>
+                </View>
+                <View>
+                    <FlatList
+                        data={this.state.dataSource}
+                        renderItem={this.renderItem}
+                        // keyExtractor={(item, index) => index}
+                    />
                 </View>
             </View>
-        )
 
-        const historyJSX = (
-            <View>
-                <Text>This ability will be coming soon! </Text>
-            </View>
-        )
-
-        const indexJSX = this.state.isSignin ? historyJSX : signinJSX;
-
-        return (
-            <View style={styles.container}>
-                { indexJSX }
-            </View>
         )
     }
 }
@@ -46,37 +68,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    wrapper: { 
-        flex: 1, 
-        justifyContent: "center", 
-        alignItems: 'center',
-        backgroundColor: '#D7D7D7' 
-    },
-    text: { 
-        width: "70%",
-        fontWeight: '700',
-        fontSize: 16
-    },
-    rowInfoContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: "center"
-    },
-    button: {
-        width: '35%',
+    header: {
         backgroundColor: '#1c9ad6',
-        marginVertical: "5%",
-        paddingVertical: 8,
-        borderRadius: 10,
-        borderWidth: 1,
-        margin: "1%"
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+        paddingVertical: "5%"
     },
-    buttonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#ffffff',
-        textAlign: 'center',
-        textTransform: "capitalize",
-        paddingHorizontal: 15
+    headerTitle: {
+        fontFamily: 'Avenir',
+        color: '#fff', fontSize: 30,
+        marginLeft: '3%',
+        fontWeight: 'bold'
     },
+    rowItem: {
+        borderColor: "#000000",
+        borderWidth: 2,
+        margin: "2%",
+        padding: "1%"
+    }
 })

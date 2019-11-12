@@ -26,7 +26,7 @@ export default class More extends Component {
                 </View>
                 <View style={styles.rowInfoContainer}>
                     <Image source={require("../../Asset/history-survey.png")} style={styles.iconStyle} />
-                    <TouchableOpacity onPress={() => { this.props.navigation.navigate("Auth") }}>
+                    <TouchableOpacity onPress={() => { this.props.navigation.navigate("surveyHistory") }}>
                         <Text style={styles.infoText}>My History Survey Form</Text>
                     </TouchableOpacity>
                 </View>

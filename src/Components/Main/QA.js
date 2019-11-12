@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { CheckBox } from 'react-native-elements';
 
 
-export default class CreateForm extends Component {
+export default class QA extends Component {
     constructor(props) {
         super(props);
         this.state = {

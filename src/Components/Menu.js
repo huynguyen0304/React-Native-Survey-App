@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Main from './Main/Main';
 import CreateForm from './Main/CreateForm';
 import Reports from './Main/Reports';
+import SurveyHistory from './OpenMore/SurveyHistory';
 import More from './Main/More';
 
 
@@ -31,7 +32,7 @@ export default createMaterialBottomTabNavigator(
             }
         },
         reports: { 
-            screen: Reports,
+            screen: SurveyHistory,
             navigationOptions: {
                 tabBarLabel: 'Reports',
                 tabBarIcon: ({ tintColor }) => (
