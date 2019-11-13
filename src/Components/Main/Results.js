@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
+import question from '../../API/question';
 
 export default class Results extends Component {
     constructor(props) {
@@ -14,26 +15,6 @@ export default class Results extends Component {
         }
     }
 
-    componentDidMount() {
-        fetch("https://my-json-server.typicode.com/huynguyen0304/Survey/db", {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                // "question.title": this.state.question,
-                // "question.answers.answer": this.state.answers 
-            })
-        })
-            .then((res) => res.json())
-            .then((responseJson) => {
-                this.setState({
-                    dataSource: responseJson.form
-                })
-            })
-    }
-
     renderItem = ({ item }) => {
         if (JSON.stringify(navigation.getParam("item.created_by")) === item.form) {
             return (
@@ -42,16 +23,16 @@ export default class Results extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     fetch("https://my-json-server.typicode.com/huynguyen0304/Survey/db")
-    //         .then((res) => res.json())
-    //         .then((responseJson) => {
-    //             this.setState({
-    //                 results: responseJson.evaluation,
-    //                 isLoading: false
-    //             })
-    //         })
-    // }
+    componentDidMount() {
+        fetch("https://my-json-server.typicode.com/huynguyen0304/Survey/db")
+            .then((res) => res.json())
+            .then((responseJson) => {
+                this.setState({
+                    results: responseJson.evaluation,
+                    isLoading: false
+                })
+            });
+    }
 
     render() {
         return (
