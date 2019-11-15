@@ -45,7 +45,7 @@ export default class Results extends Component {
 
     render() {
         const itemid = JSON.stringify(this.props.navigation.getParam("itemid", "alooo"))
-        var list = [] = this.state.dataSource.map(x => x.id);
+        var list = this.state.dataSource.filter(x => x.id === itemid);
         const result = this.state.isLoading ?
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <ActivityIndicator size="large" color="#1c9ad6" animating />
@@ -59,12 +59,10 @@ export default class Results extends Component {
 
         let indexJSX;
 
-        for (var i = 0; i <= list.length; i++) {
-            if (itemid === list[i]) {
-                indexJSX = result;
-            }
-            else indexJSX = error;
+        if (list) {
+            indexJSX = result;
         }
+        else indexJSX = error;
 
         return (
             <View>
