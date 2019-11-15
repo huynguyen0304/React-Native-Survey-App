@@ -8,6 +8,7 @@ export default class Results extends Component {
         super(props);
         this.state = {
             dataSource: [],
+            id_question: "",
             question: [],
             answers: [],
             results: [],
@@ -16,34 +17,60 @@ export default class Results extends Component {
     }
 
     renderItem = ({ item }) => {
-        if (JSON.stringify(navigation.getParam("item.created_by")) === item.form) {
-            return (
-                <View></View>
-            )
-        }
+        return (
+            <View>
+                <Text>{item.title}</Text>
+                {/* <PieChart
+                    data="{results}"
+                    width="{screenWidth}"
+                    height="{220}"
+                    chartConfig="{chartConfig}"
+                    backgroundColor="transparent"
+                    paddingLeft="15"
+                /> */}
+            </View>
+        )
     }
 
     componentDidMount() {
-        fetch("https://my-json-server.typicode.com/huynguyen0304/Survey/db")
+        fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/db")
             .then((res) => res.json())
             .then((responseJson) => {
                 this.setState({
-                    results: responseJson.evaluation,
+                    dataSource: responseJson.form,
                     isLoading: false
                 })
-            });
+            })
     }
 
     render() {
+        const itemid = JSON.stringify(this.props.navigation.getParam("itemid", "alooo"))
+        var list = [] = this.state.dataSource.map(x => x.id);
+        const result = this.state.isLoading ?
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator size="large" color="#1c9ad6" animating />
+            </View>
+            :
+            <View>
+                <Text>{itemid}</Text>
+            </View>;
+
+        const error = <View><Text>Nothing here!</Text></View>;
+
+        let indexJSX;
+
+        for (var i = 0; i <= list.length; i++) {
+            if (itemid === list[i]) {
+                indexJSX = result;
+            }
+            else indexJSX = error;
+        }
+
         return (
-            this.state.isLoading ?
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <ActivityIndicator size="large" color="#1c9ad6" animating />
-                </View>
-                :
-                <View>
-                </View>
-        )
+            <View>
+                {indexJSX}
+            </View>
+        );
     }
 }
 

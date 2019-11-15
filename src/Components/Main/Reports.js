@@ -18,10 +18,11 @@ export default class Reports extends Component {
     }
 
     renderItem = ({ item }) => {
+        const id = item.id;
         return (
             <View style={styles.rowItem}>
                 <TouchableOpacity 
-                    onPress={() => {this.props.navigation.navigate("results"),item.created_by}}
+                    onPress={() => {this.props.navigation.navigate("results", {itemid: id}) }}
                 >
                     <Text>Title: {item.title}</Text>
                     <Text>Open: {item.created_time}</Text>
@@ -39,7 +40,7 @@ export default class Reports extends Component {
                     dataSource: responseJson.form,
                     isLoading: false
                 })
-            })
+            });
     }
 
     render() {
