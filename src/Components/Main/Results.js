@@ -9,7 +9,7 @@ export default class Results extends Component {
         this.state = {
             dataSource: [],
             id_question: "",
-            question: [],
+            questions: [],
             answers: [],
             results: [],
             isLoading: true
@@ -17,9 +17,27 @@ export default class Results extends Component {
     }
 
     renderItem = ({ item }) => {
+        const questions = this.state.dataSource.map((item, index) => {
+            return item.questions//.map((item, index) => {
+            //return item.title;
+            //});
+        });
+        const questionTile = questions.map((items, index) => {
+            return items.map(item => item.title)
+        });
+        // alert(...questionTile);
+
+        /**
+         * const list = this.state.data.map((item, index) => {
+              return item.questions.map((item, index) => {
+                return <h1 key={index}>{item.title}</h1>;
+              });
+            });
+         */
+
         return (
-            <View>
-                <Text>{item.title}</Text>
+            <View style={styles.rowItem}>
+                <Text>{questionTile}</Text>
                 {/* <PieChart
                     data="{results}"
                     width="{screenWidth}"
@@ -40,6 +58,7 @@ export default class Results extends Component {
                     dataSource: responseJson.form,
                     isLoading: false
                 })
+
             })
     }
 
@@ -52,7 +71,10 @@ export default class Results extends Component {
             </View>
             :
             <View>
-                <Text>{itemid}</Text>
+                <FlatList
+                    data={this.state.dataSource}
+                    renderItem={this.renderItem}
+                />
             </View>;
 
         const error = <View><Text>Nothing here!</Text></View>;
@@ -72,4 +94,11 @@ export default class Results extends Component {
     }
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    rowItem: {
+        borderColor: "#000000",
+        borderWidth: 2,
+        margin: "2%",
+        padding: "1%"
+    }
+})
