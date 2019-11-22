@@ -16,28 +16,18 @@ export default class CreateForm extends Component {
     }
 
     handleSubmit = () => {
-        // fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/account", {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         title: this.state.title,
-        //         discription: this.state.discription
-        //     })
-        // })
-        // .then(response => console.log(response.json()))
-        // .then((response) => {
-        //     console.log(response)
-        //     if (response) {
-        //         AsyncStorage.setItem("Auth", response)
-        //         this.props.navigation.navigate("start");
-        //     }
-        //     else {
-        //         alert("Username or Password is incorrect");
-        //     }
-        // })
+        fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/account", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: this.state.title,
+                discription: this.state.discription
+            })
+        })
+        .then(response => console.log(response.json()))
     }
 
     render() {

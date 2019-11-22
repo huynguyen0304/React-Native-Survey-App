@@ -14,10 +14,6 @@ const FBSDK = require('react-native-fbsdk');
 const {
     LoginManager
 } = FBSDK;
-const userTest = {
-    username: "meomeo",
-    pass: "1123"
-}
 
 export default class Signin extends Component {
     constructor(props) {
@@ -26,19 +22,11 @@ export default class Signin extends Component {
             username: "",
             password: "",
             historyRoute: "",
-            userInfo: {},
-            isLogging: false,
-            loading: false
+            access: ""
         }
     }
 
-    onSubmit = e => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
+    componentDidMount() {
     }
 
     _signingoogle = async () => {
@@ -125,44 +113,24 @@ export default class Signin extends Component {
     }
 
     onSubmit = () => {
-        this.setState({ loading: true })
-        setTimeout(() => {
-            if (this.state.username === userTest.username && this.state.password === userTest.pass) {
-                console.log("ok baby")
-                this.setState({ loading: false })
-                AsyncStorage.setItem("Authchecker", true);
-                this.props.navigation.navigate("App")
-
-            }
-            else {
-                this.setState({ loading: false })
-                alert("Username or Password is incorrect");
-
-            }
-        }, 2000)
-        /*  fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/account", {
-              method: 'POST',
-              headers: {
-                  'Accept': 'application/json',
-                  'Content-type': 'application/json'
-              },
-              body: JSON.stringify({
-                  username: this.state.username,
-                  password: this.state.password
-              })
-          })
-          .then(response => console.log(response.json()))
-          .then((response) => {
-              console.log(response)
-              if (response) {
-                  AsyncStorage.setItem("Auth",response)
-                  this.props.navigation.navigate("start");
-              }
-              else {
-                  alert("Username or Password is incorrect");
-              }
-          })
-          */
+        fetch("http://104.248.154.180/api/token/", {
+            method: 'POST',
+            headers: {
+                "Accept": 'application/json',
+                "Content-type": 'application/json'
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.password,
+            })
+        })
+            .then(response => console.log(response))
+            .then((responseJson) => console.log(
+                this.setState({
+                    access: responseJson
+                })
+            ))
+            .catch(err => console.log(err))
     }
 }
 
