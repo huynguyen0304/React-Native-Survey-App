@@ -19,30 +19,29 @@ export default class Signin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "son",
-            password: "sonhuynh",
+            username: "",
+            password: "",
             historyRoute: "",
             access: ""
         }
     }
 
-    componentDidUpdate() {
-        console.log(this.state.access.access);
-        if (!this.state.access.access){
-            alert("Username or Password is invalid !!!");
-        } else {
-            try {
-                const AccessToken = AsyncStorage.setItem("accesstoken", this.state.access.access);
-                console.log(AccessToken);
-                this.props.navigation.navigate("start");
-            }
-            catch (err) {
-                console.log(err)
+    componentDidUpdate(prevState) {
+        if(prevState.access !== this.state.access.access){
+            if (!this.state.access.access){
+                alert("Username or Password is invalid !!!");
+            } else {
+                try {
+                    const accesstoken = this.state.access.access;
+                    const AccessToken = AsyncStorage.setItem("accesstoken", accesstoken);
+                    console.log(AccessToken);
+                    this.props.navigation.navigate("start");
+                }
+                catch (err) {
+                    console.log(err)
+                }
             }
         }
-    }
-
-    componentDidMount() {
     }
 
     _signingoogle = async () => {

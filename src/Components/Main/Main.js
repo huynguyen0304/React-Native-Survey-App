@@ -1,47 +1,75 @@
 import React, { Component } from 'react';
 import { 
-    Text, StyleSheet, View, TextInput, TouchableOpacity, Head 
+    Text, StyleSheet, View, TextInput, TouchableOpacity
 } from 'react-native';
+import getToken from '../../API/getToken';
+
 
 export default class Main extends Component {
     constructor(props){
         super(props);
         this.state = {
-            code: ''
+            code: "",
+            forms: [],
+            key: ""
         }
     }
 
-    handleEnter() {
-        // let collection = {}
-        // collection.code = this.state.code;
+    componentDidUpdate(prevState) {
+        // if(this.state) {
+        //     alert("SurveyCode is invalid or not exist !!!");
+        // } else {
+        //     this.props.navigation.navigate("");
+        // }
+    }
 
+    componentDidMount() {
+        var token = getToken().then(response => response);
+        console.log(token);
+
+        fetch("http://104.248.154.180/api/form/", {
+            method: 'GET',
+            headers:{
+                "Accept": 'application/json',
+                "Content-type": 'application/json',
+                "Authorization": 'Bearer ' + token
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then((responseJson) => {
+            this.setState({
+                forms: responseJson
+            })
+        })
+        .catch(err => console.log(err))
+    }
+
+    handleEnter() {
         // fetch("", {
-        //     method: 'GET',
-        //     headers: new Headers({
-        //         'Content-type': 'application/json'
-        //     }),
-        //     body: JSON.stringify(collection)
+        //     method: 'POST',
+        //     headers:{
+        //         "Accept": 'application/json',
+        //         "Content-type": 'application/json'
+        //     },
+        //     body: JSON.stringify(this.state.code)
         // })
         // .then(res => res.json())
-        // .then(this.props.navigation.navigate("survey"))
-        // .catch(err => console.error('Error', err))
-        // .then(response => console.log('Success', response));
-
-        // this.props.navigation.navigate("survey");
+        // .catch(err => console.error(err))
     }
 
     render() {
         return (
             <View style={styles.container}>
+                <Text style={styles.text}>Enter SurveyCode to entry:</Text>
                 <TextInput 
                     style={styles.textinput}
-                    placeholder="SURVEY CODE"
                     value={this.state.code}
                     maxLength={6}
                     onChangeText={(code) => this.setState({code})}
                 />
-                <TouchableOpacity style={styles.button} onPress={this.handleEnter.bind(this)}>
-                    <Text style={styles.text}>Enter</Text>
+                <TouchableOpacity style={styles.button} onPress={this.handleEnter}>
+                    <Text style={styles.buttonText}>Enter</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -78,10 +106,17 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
     },
     text: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#ffffff',
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#000000',
         textAlign: 'center',
-        textTransform: "uppercase"
+        padding: "1%"
+    },
+    buttonText: {
+        fontSize: 19,
+        fontWeight: 'bold',
+        color: '#000000',
+        textAlign: 'center',
+        textTransform: 'uppercase'
     }
 })
