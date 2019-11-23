@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Text, View, Image,
-    TouchableOpacity, KeyboardAvoidingView, AsyncStorage
+    Text, View,
+    TouchableOpacity, KeyboardAvoidingView
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 
 const FBSDK = require('react-native-fbsdk');
@@ -19,10 +19,26 @@ export default class Signin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "",
-            password: "",
+            username: "son",
+            password: "sonhuynh",
             historyRoute: "",
             access: ""
+        }
+    }
+
+    componentDidUpdate() {
+        console.log(this.state.access.access);
+        if (!this.state.access.access){
+            alert("Username or Password is invalid !!!");
+        } else {
+            try {
+                const AccessToken = AsyncStorage.setItem("accesstoken", this.state.access.access);
+                console.log(AccessToken);
+                this.props.navigation.navigate("start");
+            }
+            catch (err) {
+                console.log(err)
+            }
         }
     }
 
@@ -112,8 +128,8 @@ export default class Signin extends Component {
         )
     }
 
-    onSubmit = () => {
-        fetch("http://104.248.154.180/api/token/", {
+    onSubmit = async () => {
+        await fetch("http://104.248.154.180/api/token/", {
             method: 'POST',
             headers: {
                 "Accept": 'application/json',
@@ -121,16 +137,18 @@ export default class Signin extends Component {
             },
             body: JSON.stringify({
                 username: this.state.username,
-                password: this.state.password,
+                password: this.state.password
             })
         })
-            .then(response => console.log(response))
-            .then((responseJson) => console.log(
-                this.setState({
+            .then(response => {
+                return response.json();
+            })
+            .then((responseJson) => {
+                 this.setState({
                     access: responseJson
                 })
-            ))
-            .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err));
     }
 }
 
