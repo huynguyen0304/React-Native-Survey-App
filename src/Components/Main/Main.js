@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { 
     Text, StyleSheet, View, TextInput, TouchableOpacity
 } from 'react-native';
+import Modal from "react-native-modal";
 import getToken from '../../API/getToken';
 
 
@@ -11,30 +12,32 @@ export default class Main extends Component {
         this.state = {
             code: "",
             forms: [],
-            key: ""
+            key: "",
+            isModalVisible: false
         }
     }
 
-    componentDidUpdate(prevState) {
+    componentDidUpdate() {
         // if(this.state) {
         //     alert("SurveyCode is invalid or not exist !!!");
         // } else {
         //     this.props.navigation.navigate("");
         // }
+        console.log(this.state.forms)
     }
 
-    componentDidMount() {
-        var token = getToken().then(response => response);
+    componentDidMount = async () => {
+        var token = await getToken().then(response => response);
         console.log(token);
 
-        fetch("http://104.248.154.180/api/form/", {
+        await fetch("http://104.248.154.180/api/form/", {
             method: 'GET',
             headers:{
                 "Accept": 'application/json',
                 "Content-type": 'application/json',
                 "Authorization": 'Bearer ' + token
             },
-            body: JSON.stringify({})
+            body: JSON.stringify()
         })
         .then(response => response.json())
         .then((responseJson) => {
@@ -43,6 +46,10 @@ export default class Main extends Component {
             })
         })
         .catch(err => console.log(err))
+    }
+
+    toggleModal = () => {
+        this.setState({ isModalVisible: !this.state.isModalVisible });
     }
 
     handleEnter() {
@@ -61,16 +68,24 @@ export default class Main extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>Enter SurveyCode to entry:</Text>
-                <TextInput 
-                    style={styles.textinput}
-                    value={this.state.code}
-                    maxLength={6}
-                    onChangeText={(code) => this.setState({code})}
-                />
-                <TouchableOpacity style={styles.button} onPress={this.handleEnter}>
-                    <Text style={styles.buttonText}>Enter</Text>
-                </TouchableOpacity>
+                <View style={styles.header}>
+                    <Text style={styles.headerTitle}>Home</Text>
+                </View>
+                <Modal isVisible={this.state.isModalVisible} style={styles.modalcontainer}>
+                    <Text style={styles.text}>Enter SurveyCode to entry:</Text>
+                    <TextInput 
+                        style={styles.textinput}
+                        value={this.state.code}
+                        maxLength={6}
+                        onChangeText={(code) => this.setState({code})}
+                    />
+                    <TouchableOpacity style={styles.buttonEnter} onPress={this.handleEnter}>
+                        <Text style={styles.buttonText}>Enter</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonCancel} onPress={this.toggleModal}>
+                        <Text style={styles.buttonText}>Cancel</Text>
+                    </TouchableOpacity>
+                </Modal>
             </View>
         )
     }
@@ -78,13 +93,35 @@ export default class Main extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1
+    },
+    header: {
+        backgroundColor: '#1c9ad6',
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+        paddingVertical: "5%"
+    },
+    headerTitle: {
+        fontFamily: 'Avenir',
+        color: '#fff', fontSize: 30,
+        marginLeft: '3%',
+        fontWeight: 'bold'
+    },
+    modalcontainer: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: '#D7D7D7'
+        alignItems: "center"
+    },
+    text: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: '#fff',
+        textAlign: 'center',
+        padding: "1%"
     },
     textinput: {
-        width: '40%',
+        width: '80%',
         backgroundColor: 'white', 
         borderRadius: 10,
         borderColor: "black",
@@ -96,27 +133,29 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textTransform: "uppercase"
     },
-    button: {
+    buttonEnter: {
         width: '40%',
         backgroundColor: '#1c9ad6',
         borderRadius: 10,
-        borderColor: "black",
+        borderColor: "#000000",
         borderWidth: 2,
         marginVertical: 10,
         paddingVertical: 12,
     },
-    text: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: '#000000',
-        textAlign: 'center',
-        padding: "1%"
+    buttonCancel: {
+        width: '40%',
+        backgroundColor: '#CC0000',
+        borderRadius: 10,
+        borderColor: "#000000",
+        borderWidth: 2,
+        marginVertical: 10,
+        paddingVertical: 12,
     },
     buttonText: {
         fontSize: 19,
         fontWeight: 'bold',
-        color: '#000000',
+        color: '#fff',
         textAlign: 'center',
-        textTransform: 'uppercase'
+        // textTransform: 'uppercase'
     }
 })
