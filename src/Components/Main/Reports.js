@@ -13,7 +13,7 @@ export default class Reports extends Component {
         super(props);
         this.state = {
             dataSource: [],
-            isLoading: true
+            isLoading: false
         }
     }
 

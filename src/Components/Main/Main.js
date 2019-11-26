@@ -1,68 +1,85 @@
 import React, { Component } from 'react';
-import { 
-    Text, StyleSheet, View, TextInput, TouchableOpacity
+import {
+    Text, StyleSheet, View, TextInput, TouchableOpacity, FlatList
 } from 'react-native';
 import Modal from "react-native-modal";
 import getToken from '../../API/getToken';
 
 
 export default class Main extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            code: "",
+            surveykey: "",
             forms: [],
-            key: "",
             isModalVisible: false
-        }
+        };
+        this.onPress = this.openModal.bind(this);
+        this.onPress = this.handleEnter;
     }
 
     componentDidUpdate() {
-        // if(this.state) {
-        //     alert("SurveyCode is invalid or not exist !!!");
-        // } else {
-        //     this.props.navigation.navigate("");
-        // }
-        console.log(this.state.forms)
+        // console.log(this.state.forms)
+    }
+
+    renderItem = ({ item }) => {
+        const id = item.id;
+        return (
+            <View style={styles.rowItem}>
+                <TouchableOpacity
+                    onPress={this.openModal.bind(this, id)}
+                >
+                    <Text>Title: {item.title}</Text>
+                    <Text>Description: {item.description}</Text>
+                    <Text>Open: {item.created_time}</Text>
+                </TouchableOpacity>
+            </View>
+        )
     }
 
     componentDidMount = async () => {
         var token = await getToken().then(response => response);
-        console.log(token);
 
         await fetch("http://104.248.154.180/api/form/", {
             method: 'GET',
-            headers:{
+            headers: {
                 "Accept": 'application/json',
                 "Content-type": 'application/json',
                 "Authorization": 'Bearer ' + token
             },
             body: JSON.stringify()
         })
-        .then(response => response.json())
-        .then((responseJson) => {
-            this.setState({
-                forms: responseJson
+            .then(response => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    forms: responseJson
+                })
             })
-        })
-        .catch(err => console.log(err))
+            .catch(err => console.log(err))
     }
 
-    toggleModal = () => {
-        this.setState({ isModalVisible: !this.state.isModalVisible });
+    openModal(id) {
+        this.setState({ isModalVisible: true });
+        this.handleEnter.bind(this, id)
     }
 
-    handleEnter() {
-        // fetch("", {
-        //     method: 'POST',
-        //     headers:{
-        //         "Accept": 'application/json',
-        //         "Content-type": 'application/json'
-        //     },
-        //     body: JSON.stringify(this.state.code)
-        // })
-        // .then(res => res.json())
-        // .catch(err => console.error(err))
+    handleEnter = (id) => {
+        const forms = this.state.forms.find(x => x);
+        const key = forms.key;
+        console.log(key);
+        console.log(id);
+        // if (id) {
+        //     if (this.state.surveykey !== key) {
+        //         alert("This Survey key is not exist or invalid. Please try again !");
+        //     } else {
+        //         // this.props.navigation.navigate("evaluation", (id, key));
+        //         alert("alooo");
+        //     }
+        // }
+    }
+
+    closeModal = () => {
+        this.setState({ isModalVisible: false });
     }
 
     render() {
@@ -71,18 +88,27 @@ export default class Main extends Component {
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>Home</Text>
                 </View>
-                <Modal isVisible={this.state.isModalVisible} style={styles.modalcontainer}>
-                    <Text style={styles.text}>Enter SurveyCode to entry:</Text>
-                    <TextInput 
+                <View>
+                    <FlatList
+                        data={this.state.forms}
+                        renderItem={this.renderItem}
+                    // keyExtractor={(item, index) => index}
+                    />
+                </View>
+                <Modal
+                    isVisible={this.state.isModalVisible} 
+                    style={styles.modalcontainer}>
+                    <Text style={styles.text}>Enter SurveyKey to entry:</Text>
+                    <TextInput
                         style={styles.textinput}
-                        value={this.state.code}
-                        maxLength={6}
-                        onChangeText={(code) => this.setState({code})}
+                        value={this.state.surveykey}
+                        maxLength={15}
+                        onChangeText={(surveykey) => this.setState({ surveykey })}
                     />
                     <TouchableOpacity style={styles.buttonEnter} onPress={this.handleEnter}>
                         <Text style={styles.buttonText}>Enter</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonCancel} onPress={this.toggleModal}>
+                    <TouchableOpacity style={styles.buttonCancel} onPress={this.closeModal}>
                         <Text style={styles.buttonText}>Cancel</Text>
                     </TouchableOpacity>
                 </Modal>
@@ -108,30 +134,45 @@ const styles = StyleSheet.create({
         marginLeft: '3%',
         fontWeight: 'bold'
     },
+    rowItem: {
+        borderColor: "#000000",
+        borderWidth: 2,
+        margin: "2%",
+        padding: "1%"
+    },
     modalcontainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
+        position: "absolute",
+        marginTop: "40%",
+        alignItems: "center",
+        alignSelf: "center",
+        borderWidth: 3,
+        borderRadius: 12,
+        borderColor: "#000000",
+        backgroundColor: "#fff",
+        opacity: 0.8
     },
     text: {
+        marginTop: "3%",
         fontSize: 18,
         fontWeight: '700',
-        color: '#fff',
+        color: '#000000',
         textAlign: 'center',
-        padding: "1%"
+        padding: "1%",
+        marginHorizontal: "10%",
     },
     textinput: {
         width: '80%',
-        backgroundColor: 'white', 
-        borderRadius: 10,
+        backgroundColor: '#fff',
+        // borderRadius: 10,
         borderColor: "black",
         borderWidth: 2,
         paddingHorizontal: 16,
         fontSize: 14,
-        color: 'black',
+        color: '#000000',
         marginVertical: 5,
         textAlign: "center",
-        textTransform: "uppercase"
+        textTransform: "none",
+        marginHorizontal: "10%"
     },
     buttonEnter: {
         width: '40%',
@@ -139,8 +180,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: "#000000",
         borderWidth: 2,
-        marginVertical: 10,
-        paddingVertical: 12,
+        marginVertical: "2%",
+        paddingVertical: "3%"
     },
     buttonCancel: {
         width: '40%',
@@ -148,8 +189,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: "#000000",
         borderWidth: 2,
-        marginVertical: 10,
-        paddingVertical: 12,
+        marginVertical: "1%",
+        paddingVertical: "3%",
     },
     buttonText: {
         fontSize: 19,
