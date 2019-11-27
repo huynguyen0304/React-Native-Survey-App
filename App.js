@@ -43,6 +43,7 @@ const AppNavigator = createStackNavigator({
     multiplechoices: MutipleChoices,
     textchoices: TextChoices,
     yesnochoices: YesNoChoices,
+    evaluation: Evaluation,
     votechoices: VoteChoices
 });
 
@@ -50,7 +51,6 @@ const AuthNavigator = createStackNavigator({
     signin: Signin,
     reports: Reports,
     results: Results,
-    evaluation: Evaluation,
     feedback: Feedback,
     updateProfile: UpdateProfile
 });

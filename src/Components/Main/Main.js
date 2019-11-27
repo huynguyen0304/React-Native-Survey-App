@@ -58,25 +58,35 @@ export default class Main extends Component {
             .catch(err => console.log(err))
     }
 
-    openModal(id) {
+    openModal(id, handleEnter) {
         this.setState({ isModalVisible: true });
-        this.handleEnter.bind(this, id)
-    }
-
-    handleEnter = (id) => {
         const forms = this.state.forms.find(x => x);
         const key = forms.key;
-        console.log(key);
-        console.log(id);
-        // if (id) {
-        //     if (this.state.surveykey !== key) {
-        //         alert("This Survey key is not exist or invalid. Please try again !");
-        //     } else {
-        //         // this.props.navigation.navigate("evaluation", (id, key));
-        //         alert("alooo");
-        //     }
-        // }
+        this.handleEnter = () => {
+            if (id) {
+                if (this.state.surveykey !== key) {
+                    alert("This Survey key is not exist or invalid. Please try again !");
+                } else {
+                    this.props.navigation.navigate("evaluation", {id, key});
+                    this.setState({ isModalVisible: false })
+                }
+            }
+        };
     }
+
+    // handleEnter = (id) => {
+    //     const forms = this.state.forms.find(x => x);
+    //     const key = forms.key;
+    //     console.log(id);
+    //     // if (id) {
+    //     //     if (this.state.surveykey !== key) {
+    //     //         alert("This Survey key is not exist or invalid. Please try again !");
+    //     //     } else {
+    //     //         // this.props.navigation.navigate("evaluation", (id, key));
+    //     //         alert("alooo");
+    //     //     }
+    //     // }
+    // }
 
     closeModal = () => {
         this.setState({ isModalVisible: false });
@@ -96,7 +106,7 @@ export default class Main extends Component {
                     />
                 </View>
                 <Modal
-                    isVisible={this.state.isModalVisible} 
+                    isVisible={this.state.isModalVisible}
                     style={styles.modalcontainer}>
                     <Text style={styles.text}>Enter SurveyKey to entry:</Text>
                     <TextInput
