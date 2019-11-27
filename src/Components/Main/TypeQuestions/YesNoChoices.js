@@ -6,19 +6,70 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CheckBox } from 'react-native-elements';
 
+class SingleAnswereChoice extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            checked: false,
+            id: props.key
+        }
+    }
 
-export default class QA extends Component {
+    render() {
+        return (
+            <View style={styles.rowCheckbox}
+            // key={this.state.choice}
+            >
+                <CheckBox
+                    checkedIcon='check-square-o'
+                    uncheckedIcon='square-o'
+                    checked={this.state.checked}
+                    onIconPress={() => {
+                        this.setState({ checked: !this.state.checked }
+                        )
+                    }
+                    }
+                />
+
+                <TextInput
+                    value={this.state.choice}
+                    placeholder="Choice text"
+                    style={styles.choiceText}
+                // onChangeText={(choice) => this.setState({ choice })}
+                // onKeyPress={this.handleAdd}
+                />
+
+                <Icon
+                    name="ios-close"
+                    style={styles.iconremove}
+                    onPress={this.props.handleRemove()}
+                />
+            </View>
+        );
+    }
+}
+export default class YesNoChoices extends Component {
     constructor(props) {
         super(props);
         this.state = {
             question: "",
             choice: 1,
-            checked: false
+            // AnswerChoice: [
+            //     {
+            //         id: 1,
+            //         Answere: "",
+            //         Checked: false
+            //     }
+            // ]
         };
     }
-
+    componentDidMount() {
+        // this.setState(prevState => ({
+        //     AnswerChoice: [...prevState.AnswerChoice, newElement]
+        // }))
+    }
     handleRemove = () => {
-        if ( this.state.choice > 1 ){
+        if (this.state.choice > 1) {
             this.setState({ choice: this.state.choice - 1 });
         }
     };
@@ -35,43 +86,26 @@ export default class QA extends Component {
     }
 
     render() {
-        const Input = () => {
-            let inputTotal = [];
+        const AnswerChoice = () => {
+            let AnswerChoiceArray = [];
             for (let index = 0; index < this.state.choice; index++) {
-                inputTotal.push(
-                        <View style={styles.rowCheckbox}
-                            // key={this.state.choice}
-                        >
-                            <CheckBox
-                                checkedIcon='check-square-o'
-                                uncheckedIcon='square-o'
-                                checked={this.state.checked}
-                            />
-
-                            <TextInput
-                                value={this.state.choice}
-                                placeholder="Choice text"
-                                style={styles.choiceText}
-                                // onChangeText={(choice) => this.setState({ choice })}
-                                // onKeyPress={this.handleAdd}
-                            />
-
-                            <Icon
-                                name="ios-close"
-                                style={styles.iconremove}
-                                onPress={this.handleRemove}
-                            />
-                        </View>
+                AnswerChoiceArray.push(
+                    <SingleAnswereChoice key={index}
+                        handleRemove={() => this.handleRemove}
+                    />
                 );
             }
-            return inputTotal;
+            return AnswerChoiceArray
+            // return this.state.AnswerChoice.map(Answere=>{
+            //     return 
+            // });
         };
         return (
             <View style={styles.container}>
                 <ScrollView>
                     <View>
                         <View style={styles.header}>
-                            <Text style={styles.headerTitle}>Create your Survey</Text>
+                            <Text style={styles.headerTitle}>Create Yes/No Choices</Text>
                         </View>
 
                         <View style={styles.form}>
@@ -80,7 +114,7 @@ export default class QA extends Component {
                                     placeholder="Question title ?"
                                     style={styles.questionText}
                                 />
-                                <Input />
+                                <AnswerChoice />
                             </View>
 
                             <TouchableOpacity style={styles.rowContainer} onPress={() => { this.handleAdd() }}>

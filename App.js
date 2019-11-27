@@ -17,10 +17,14 @@ import UserProfile from './src/Components/OpenMore/UserProfile';
 import UpdateProfile from './src/Components/OpenMore/UpdateProfile';
 import AuthLoadingScreen from './src/Components/AuthLoadingScreen';
 import CreateForm from './src/Components/Main/CreateForm';
-import QA from './src/Components/Main/QA';
 import Reports from './src/Components/Main/Reports';
 import Results from './src/Components/Main/Results';
 import Evaluation from './src/Components/Main/Evaluation';
+import MenuToChoose from './src/Components/Main/TypeQuestions/MenuToChoose';
+import MutipleChoices from './src/Components/Main/TypeQuestions/MultipleChoices';
+import TextChoices from './src/Components/Main/TypeQuestions/TextChoices';
+import VoteChoices from './src/Components/Main/TypeQuestions/VoteChoices'
+import YesNoChoices from './src/Components/Main/TypeQuestions/YesNoChoices';
 
 
 StatusBar.setHidden(true);
@@ -29,22 +33,26 @@ const AppNavigator = createStackNavigator({
     home: Home,
     start: Menu,
     createform: CreateForm,
-    qa: QA,
     surveyHistory: SurveyHistory,
     userProfile: UserProfile,
     contact: Contact,
     instruction: Instruction,
-    feedback: Feedback,
-    updateProfile: UpdateProfile
+    signup: Signup,
+    forgot: ForgotPassword,
+    menutochoose: MenuToChoose,
+    multiplechoices: MutipleChoices,
+    textchoices: TextChoices,
+    yesnochoices: YesNoChoices,
+    votechoices: VoteChoices
 });
 
 const AuthNavigator = createStackNavigator({
     signin: Signin,
-    signup: Signup,
-    forgot: ForgotPassword,
     reports: Reports,
     results: Results,
-    evaluation: Evaluation
+    evaluation: Evaluation,
+    feedback: Feedback,
+    updateProfile: UpdateProfile
 });
 
 // const AppContainer = createAppContainer(createSwitchNavigator(

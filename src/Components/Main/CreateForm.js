@@ -75,7 +75,7 @@ export default class CreateForm extends Component {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.rowAddQuestion} onPress={() => { this.props.navigation.navigate("qa") }}>
+                    <TouchableOpacity style={styles.rowAddQuestion} onPress={() => { this.props.navigation.navigate("menutochoose") }}>
                         <Icon style={styles.icon} name="ios-add-circle-outline" />
                         <Text style={{ paddingVertical: "3%" }}>Add Question</Text>
                     </TouchableOpacity>
@@ -98,7 +98,7 @@ export default class CreateForm extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     },
     header: {
         backgroundColor: '#1c9ad6',

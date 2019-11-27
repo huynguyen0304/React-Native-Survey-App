@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { CheckBox } from 'react-native-elements';
 
 
-export default class MultipleChoice extends Component {
+export default class MultipleChoices extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -71,7 +71,7 @@ export default class MultipleChoice extends Component {
                 <ScrollView>
                     <View>
                         <View style={styles.header}>
-                            <Text style={styles.headerTitle}>Create your Survey</Text>
+                            <Text style={styles.headerTitle}>Create Multiple Choices</Text>
                         </View>
 
                         <View style={styles.form}>
