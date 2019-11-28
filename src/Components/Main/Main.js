@@ -60,7 +60,7 @@ export default class Main extends Component {
 
     openModal(id, handleEnter) {
         this.setState({ isModalVisible: true });
-        const forms = this.state.forms.find(x => x);
+        const forms = this.state.forms.find(x => x.id === id);
         const key = forms.key;
         this.handleEnter = () => {
             if (id) {
