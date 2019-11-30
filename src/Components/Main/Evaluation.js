@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View, FlatList, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
+import { CheckBox } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Ionicons';
 import getToken from '../../API/getToken';
 
 export default class Evaluation extends Component {
@@ -7,16 +9,14 @@ export default class Evaluation extends Component {
         super(props);
         this.state = {
             forms: [],
-            dataSource: [],
-            idQuestion: "",
-            value: ""
+            answer: [],
+            idQuestion: [],
+            value: "",
+            checked: false
         };
     }
 
-    componentDidUpdate() {
-        // console.log(this.state.forms);
-        // console.log(this.state.dataSource);
-    }
+    componentDidUpdate() {}
 
     componentDidMount = async () => {
         const id = JSON.stringify(this.props.navigation.getParam("id", "Nothing here !"));
@@ -31,21 +31,102 @@ export default class Evaluation extends Component {
                 'Authorization': 'Bearer ' + token
             }
         })
-            .then(response => response.json())
+            .then((response) => { return response.json() })
             .then((responseJson) => {
                 this.setState({
-                    forms: responseJson,
-                    dataSource: responseJson.questions
+                    forms: responseJson
                 })
             })
     }
 
-    questionItem = (item) => {
+    handleChange = () => {
+        this.setState({
+            checked: !this.state.checked
+        })
+    }
+
+    data = ({ item }) => {
         return (
-            <View style={styles.rowQuestion}>
-                <Text>{item.title}</Text>
+            <View style={{ flexDirection: "row", width: "70%" }}>
+                <CheckBox
+                    checkedIcon={<Icon name="ios-radio-button-on" size={23} />}
+                    uncheckedIcon={<Icon name="ios-radio-button-off" size={23} />}
+                    // onPress={this.handleChange}
+                    checked={this.state.checked}
+                />
+                <Text style={styles.answerText}>{item.answer}</Text>
             </View>
         )
+    }
+
+    value = ({ item }) => {
+        return (
+            <View>
+                <Text style={styles.answerText}>{item.value}</Text>
+            </View>
+        )
+    }
+
+    _keyExtractor = (item, index) => item.id;
+
+    questionItem = ({ item }) => {
+        if (item.type_questions === "multiple") {
+            return (
+                <View style={styles.form}>
+                    <View>
+                        <Text style={styles.questionText}>{item.title}</Text>
+                        <View>
+                            <FlatList
+                                data={item.answers}
+                                renderItem={this.data}
+                                extraData={this.state}
+                                keyExtractor={this._keyExtractor}
+                            />
+                        </View>
+                    </View>
+                </View>
+            )
+        } else if (item.type_questions === "yes/no") {
+            return (
+                <View style={styles.form}>
+                    <View>
+                        <Text style={styles.questionText}>{item.title}</Text>
+                        <FlatList
+                            data={item.answers}
+                            renderItem={this.data}
+                            keyExtractor={this._keyExtractor}
+                        />
+                    </View>
+                </View>
+            )
+        } else if (item.type_questions === "vote") {
+            return (
+                <View style={styles.form}>
+                    <View>
+                        <Text style={styles.questionText}>{item.title}</Text>
+                        <FlatList
+                            data={item.answers}
+                            renderItem={this.data}
+                            keyExtractor={this._keyExtractor}
+                        />
+                    </View>
+                </View>
+            )
+        } else {
+            return (
+                <View style={styles.form}>
+                    <KeyboardAvoidingView>
+                        <Text style={styles.questionText}>{item.title}</Text>
+                        <TextInput style={styles.inputBox}
+                            onChangeText={(value) => this.setState({ value })}
+                            placeholder="Your answer: "
+                            selectionColor="#fff"
+                            value={this.state.value}
+                        />
+                    </KeyboardAvoidingView>
+                </View>
+            )
+        }
     }
 
     handleSend = () => {
@@ -57,7 +138,7 @@ export default class Evaluation extends Component {
             this.state.value
         ];
 
-        fetch("http://104.248.154.180/api/evaluation/" , {
+        fetch("http://104.248.154.180/api/evaluation/", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -70,7 +151,7 @@ export default class Evaluation extends Component {
                 results: results
             })
         })
-        .then(response => response.json())
+            .then(response => response.json())
     }
 
     render() {
@@ -78,7 +159,7 @@ export default class Evaluation extends Component {
         const description = this.state.forms.description;
 
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>Evaluation</Text>
                 </View>
@@ -91,11 +172,11 @@ export default class Evaluation extends Component {
                         fontSize: 15
                     }}>{description}</Text>
                 </View>
-                <View style={styles.form}>
-                    <FlatList 
-                        data={this.state.dataSource}
+                <View>
+                    <FlatList
+                        data={this.state.forms.questions}
                         renderItem={this.questionItem}
-                        keyExtractor={item => item.id}
+                        keyExtractor={this._keyExtractor}
                     />
                 </View>
                 <View>
@@ -108,7 +189,7 @@ export default class Evaluation extends Component {
                         }}>SEND</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </ScrollView>
         )
     }
 }
@@ -140,11 +221,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 3, height: 3 },
         shadowOpacity: 0.2
     },
-    rowQuestion: {
-        margin: "2%",
-        padding: "1%",
-        width: "100%"
-    },
     buttonText: {
         fontWeight: 'bold',
         color: '#ffffff',
@@ -154,8 +230,25 @@ const styles = StyleSheet.create({
         paddingVertical: "2%",
         borderRadius: 10,
         alignSelf: "center",
-        marginTop: "2%",
+        marginVertical: "3%",
         borderWidth: 2,
         borderColor: "#000000",
+    },
+    questionText: {
+        fontSize: 16,
+        fontWeight: "500",
+        paddingBottom: "2%"
+    },
+    answerText: {
+        fontSize: 14,
+        padding: "7%"
+    },
+    inputBox: {
+        width: '80%',
+        padding: "2%",
+        fontSize: 15,
+        color: '#000000',
+        borderBottomWidth: 2,
+        borderColor: "#898989"
     },
 })

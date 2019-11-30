@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, ActivityIndicator, FlatList, ScrollView } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
-
+import getToken from '../../API/getToken';
 
 
 export default class Results extends Component {
@@ -95,23 +95,24 @@ export default class Results extends Component {
         }
     }
 
-    componentDidMount() {
+    componentDidMount = async () => {
         const itemid = JSON.stringify(this.props.navigation.getParam("itemid", "alooo"));
+        const key = JSON.parse(JSON.stringify(this.props.navigation.getParam("key", "alooo")));
+        var token = await getToken().then(response => response);
 
-        fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/form/" + itemid)
-            .then((res) => res.json())
+        fetch("http://104.248.154.180/api/form/" + itemid + "/" + "?key=" + key, {
+            method: 'GET',
+            headers: {
+                "Accept": 'application/json',
+                "Content-type": 'application/json',
+                "Authorization": 'Bearer ' + token
+            },
+            body: JSON.stringify()
+        })
+            .then((res) => { return res.json()})
             .then((responseJson) => {
                 this.setState({
-                    dataSource: responseJson.questions,
-                    isLoading: false
-                })
-            });
-
-        fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/evaluation/?form=" + itemid)
-            .then((res) => res.json())
-            .then((responseJson) => {
-                this.setState({
-                    results: responseJson.results,
+                    dataSource: responseJson,
                     isLoading: false
                 })
             });
@@ -119,7 +120,6 @@ export default class Results extends Component {
 
     render() {
         const itemid = JSON.stringify(this.props.navigation.getParam("itemid", "alooo"));
-        var list = this.state.dataSource.filter(x => x.id === itemid);
         const result = this.state.isLoading ?
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <ActivityIndicator size="large" color="#1c9ad6" animating />
@@ -130,7 +130,7 @@ export default class Results extends Component {
                     <Text style={styles.headerTitle}>Results</Text>
                 </View>
                 <FlatList
-                    data={this.state.dataSource}
+                    data={this.state.dataSource.questions}
                     renderItem={this.renderItem}
                     keyExtractor={item => item.id}
                 />
@@ -140,7 +140,7 @@ export default class Results extends Component {
 
         let indexJSX;
 
-        if (list) {
+        if (itemid) {
             indexJSX = result;
         }
         else indexJSX = error;

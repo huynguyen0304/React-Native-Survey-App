@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     ScrollView, FlatList, ActivityIndicator
 } from 'react-native';
+import getToken from '../../API/getToken';
 
 
 export default class Reports extends Component {
@@ -19,10 +20,11 @@ export default class Reports extends Component {
 
     renderItem = ({ item }) => {
         const id = item.id;
+        const key = item.key;
         return (
             <View style={styles.rowItem}>
                 <TouchableOpacity 
-                    onPress={() => {this.props.navigation.navigate("results", {itemid: id}) }}
+                    onPress={() => {this.props.navigation.navigate("results", {itemid: id, key: key}) }}
                 >
                     <Text>Title: {item.title}</Text>
                     <Text>Open: {item.created_time}</Text>
@@ -32,12 +34,22 @@ export default class Reports extends Component {
         )
     }
 
-    componentDidMount() {
-        fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/db")
+    componentDidMount = async () => {
+        var token = await getToken().then(response => response);
+
+        fetch("http://104.248.154.180/api/form/", {
+            method: 'GET',
+            headers: {
+                "Accept": 'application/json',
+                "Content-type": 'application/json',
+                "Authorization": 'Bearer ' + token
+            },
+            body: JSON.stringify()
+        })
             .then((res) => res.json())
             .then((responseJson) => {
                 this.setState({
-                    dataSource: responseJson.form,
+                    dataSource: responseJson,
                     isLoading: false
                 })
             });

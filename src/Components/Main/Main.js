@@ -68,7 +68,10 @@ export default class Main extends Component {
                     alert("This Survey key is not exist or invalid. Please try again !");
                 } else {
                     this.props.navigation.navigate("evaluation", {id, key});
-                    this.setState({ isModalVisible: false })
+                    this.setState({ 
+                        isModalVisible: false,
+                        surveykey: !this.state.surveykey
+                    })
                 }
             }
         };
