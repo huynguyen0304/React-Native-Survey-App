@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import {
     Text, StyleSheet, View, TouchableOpacity,
-    ScrollView, Image, TextInput
+    ScrollView, Image, TextInput, KeyboardAvoidingView
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { CheckBox } from 'react-native-elements';
 
 
 export default class TextChoices extends Component {
@@ -33,7 +31,10 @@ export default class TextChoices extends Component {
                         </View>
 
                         <View style={styles.form}>
-                            <View>
+                            <KeyboardAvoidingView
+                                behavior={Platform.OS === "ios" ? "padding" : null}
+                                keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+                            >
                                 <Text style={{
                                     fontSize: 16,
                                     fontWeight: "700"
@@ -52,7 +53,7 @@ export default class TextChoices extends Component {
                                     style={styles.choiceText}
                                     editable={false}
                                 />
-                            </View>
+                            </KeyboardAvoidingView>
                         </View>
 
                         <View>

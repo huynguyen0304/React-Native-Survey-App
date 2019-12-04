@@ -1,105 +1,80 @@
 import React, { Component } from 'react';
 import {
     Text, StyleSheet, View, TouchableOpacity,
-    ScrollView, Image, TextInput
+    ScrollView, TextInput, KeyboardAvoidingView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CheckBox } from 'react-native-elements';
 
-class SingleAnswereChoice extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            checked: false,
-            id: props.key
-        }
-    }
 
-    render() {
-        return (
-            <View style={styles.rowCheckbox}
-            // key={this.state.choice}
-            >
-                <CheckBox
-                    checkedIcon='check-square-o'
-                    uncheckedIcon='square-o'
-                    checked={this.state.checked}
-                    onIconPress={() => {
-                        this.setState({ checked: !this.state.checked }
-                        )
-                    }
-                    }
-                />
-
-                <TextInput
-                    value={this.state.choice}
-                    placeholder="Choice text"
-                    style={styles.choiceText}
-                // onChangeText={(choice) => this.setState({ choice })}
-                // onKeyPress={this.handleAdd}
-                />
-
-                <Icon
-                    name="ios-close"
-                    style={styles.iconremove}
-                    onPress={this.props.handleRemove()}
-                />
-            </View>
-        );
-    }
-}
 export default class YesNoChoices extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            questions: [
+                {
+                    id: Date.now(),
+                    question: "",
+                    isRight: false
+                }
+            ],
             question: "",
-            choice: 1,
-            // AnswerChoice: [
-            //     {
-            //         id: 1,
-            //         Answere: "",
-            //         Checked: false
-            //     }
-            // ]
+            questionTitle: "",
+            isRight: false,
+            activeCheckboxIndex: -1
         };
     }
-    componentDidMount() {
-        // this.setState(prevState => ({
-        //     AnswerChoice: [...prevState.AnswerChoice, newElement]
-        // }))
+
+    findIndex = (arr, id) => {
+        let result = -1;
+        arr.forEach((item, index) => {
+            if (item.id === id) {
+                result = index;
+            }
+        });
+        return result;
     }
-    handleRemove = () => {
-        if (this.state.choice > 1) {
-            this.setState({ choice: this.state.choice - 1 });
-        }
+
+    handleRemove = (id) => {
+        const { questions } = this.state;
+        let index = this.findIndex(questions, id);
+        questions.splice(index, 1);
+        this.setState({
+            ...this.state.questions
+        })
     };
 
     handleAdd = () => {
-        this.setState({ choice: this.state.choice + 1 });
+        const newItem = {
+            question: this.state.question,
+            isRight: this.state.isRight,
+            id: Date.now()
+        };
+        this.setState(state => ({
+            questions: state.questions.concat(newItem)
+        }));
+    };
+
+    handleChange = (value, index) => {
+        const newArray = [...this.state.questions];
+        newArray[index].question = value;
+        this.setState({ questions: newArray });
+    };
+
+    handleCheckbox = (id) => {
+        this.setState({
+            activeCheckboxIndex: id
+        });
     }
 
     handleSave = () => {
         this.props.navigation.navigate("createform", {
             question: this.state.question,
-            choice: this.state.choice
+            choice: this.state.questions
         });
-    }
+    };
 
     render() {
-        const AnswerChoice = () => {
-            let AnswerChoiceArray = [];
-            for (let index = 0; index < this.state.choice; index++) {
-                AnswerChoiceArray.push(
-                    <SingleAnswereChoice key={index}
-                        handleRemove={() => this.handleRemove}
-                    />
-                );
-            }
-            return AnswerChoiceArray
-            // return this.state.AnswerChoice.map(Answere=>{
-            //     return 
-            // });
-        };
         return (
             <View style={styles.container}>
                 <ScrollView>
@@ -109,15 +84,47 @@ export default class YesNoChoices extends Component {
                         </View>
 
                         <View style={styles.form}>
-                            <View>
+                            <KeyboardAvoidingView
+                                behavior={Platform.OS === "ios" ? "padding" : null}
+                                keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+                            >
+                                <Text style={{
+                                    fontSize: 16,
+                                    fontWeight: "600"
+                                }}>Question title:</Text>
                                 <TextInput
-                                    placeholder="Question title ?"
                                     style={styles.questionText}
+                                    value={this.state.questionTitle}
+                                    onChangeText={(questionTitle) => this.setState({ questionTitle })}
                                 />
-                                <AnswerChoice />
-                            </View>
+                                {this.state.questions.map((item, key) => {
+                                    return <View style={styles.rowCheckbox}
+                                        key={key}
+                                    >
+                                        <CheckBox
+                                            checkedIcon={<Icon name="ios-checkbox-outline" size={24} />}
+                                            uncheckedIcon={<Icon name="ios-square-outline" size={27} />}
+                                            onPress={()=>{this.handleCheckbox(item.id)}}
+                                            checked={this.state.activeCheckboxIndex===item.id?true:false}
+                                        />
 
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => { this.handleAdd() }}>
+                                        <TextInput
+                                            name="question"
+                                            value={item.question}
+                                            placeholder="Your choice"
+                                            style={styles.choiceText}
+                                            onChangeText={(value) => this.handleChange(value, key)}
+                                        />
+                                        <Icon
+                                            name="ios-close"
+                                            style={styles.iconremove}
+                                            onPress={() => this.handleRemove(item.id)}
+                                        />
+                                    </View>
+                                })}
+                            </KeyboardAvoidingView>
+
+                            <TouchableOpacity style={styles.rowContainer} onPress={this.handleAdd}>
                                 <Icon style={styles.icon} name="ios-add-circle-outline" />
                                 <Text style={{
                                     paddingVertical: "3%"

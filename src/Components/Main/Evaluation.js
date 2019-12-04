@@ -12,7 +12,8 @@ export default class Evaluation extends Component {
             answer: [],
             idQuestion: [],
             value: "",
-            checked: false
+            activeCheckboxIndex: -1, //luc khoi tao thi vi tri la -1
+            indexAnswer: -1
         };
     }
 
@@ -39,20 +40,28 @@ export default class Evaluation extends Component {
             })
     }
 
-    handleChange = () => {
+    handleChange = (item, index) => {
         this.setState({
-            checked: !this.state.checked
+            activeCheckboxIndex: index,
+            indexAnswer: index
         })
+        
+        console.log("State " , this.state.activeCheckboxIndex)
+        console.log("Press ",index);
+        console.log("idAnswer", this.state.indexAnswer)
     }
 
-    data = ({ item }) => {
+    data = ({ item, index }) => {
+        console.log("Index: ", index);
+        console.log(item.id);
+
         return (
             <View style={{ flexDirection: "row", width: "70%" }}>
                 <CheckBox
                     checkedIcon={<Icon name="ios-radio-button-on" size={23} />}
                     uncheckedIcon={<Icon name="ios-radio-button-off" size={23} />}
-                    // onPress={this.handleChange}
-                    checked={this.state.checked}
+                    onPress={()=>{this.handleChange(item.id, index)}}
+                    checked={(this.state.activeCheckboxIndex===index && this.state.indexAnswer===item.id)?true:false} //neu no băng index cua cai checkbox hien tai thì set lại thành true, không thì bằng false
                 />
                 <Text style={styles.answerText}>{item.answer}</Text>
             </View>
@@ -79,7 +88,7 @@ export default class Evaluation extends Component {
                             <FlatList
                                 data={item.answers}
                                 renderItem={this.data}
-                                extraData={this.state}
+                                extraData={this.state.indexAnswer}
                                 keyExtractor={this._keyExtractor}
                             />
                         </View>
@@ -94,6 +103,7 @@ export default class Evaluation extends Component {
                         <FlatList
                             data={item.answers}
                             renderItem={this.data}
+                            extraData={this.state}
                             keyExtractor={this._keyExtractor}
                         />
                     </View>
@@ -107,6 +117,7 @@ export default class Evaluation extends Component {
                         <FlatList
                             data={item.answers}
                             renderItem={this.data}
+                            extraData={this.state}
                             keyExtractor={this._keyExtractor}
                         />
                     </View>
@@ -177,6 +188,7 @@ export default class Evaluation extends Component {
                         data={this.state.forms.questions}
                         renderItem={this.questionItem}
                         keyExtractor={this._keyExtractor}
+                        extraData={this.state}
                     />
                 </View>
                 <View>

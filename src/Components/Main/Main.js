@@ -77,20 +77,6 @@ export default class Main extends Component {
         };
     }
 
-    // handleEnter = (id) => {
-    //     const forms = this.state.forms.find(x => x);
-    //     const key = forms.key;
-    //     console.log(id);
-    //     // if (id) {
-    //     //     if (this.state.surveykey !== key) {
-    //     //         alert("This Survey key is not exist or invalid. Please try again !");
-    //     //     } else {
-    //     //         // this.props.navigation.navigate("evaluation", (id, key));
-    //     //         alert("alooo");
-    //     //     }
-    //     // }
-    // }
-
     closeModal = () => {
         this.setState({ isModalVisible: false });
     }

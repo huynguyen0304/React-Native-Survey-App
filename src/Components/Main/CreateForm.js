@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {
     Text, StyleSheet, View, TouchableOpacity,
-    ScrollView, TextInput
+    ScrollView, TextInput, FlatList
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import getToken from '../../API/getToken';
 
 
 export default class CreateForm extends Component {
@@ -11,27 +12,43 @@ export default class CreateForm extends Component {
         super(props);
         this.state = {
             title: "",
-            discription: "",
+            discription: ""
         };
     }
 
-    handleSubmit = () => {
-        fetch("http://my-json-server.typicode.com/huynguyen0304/Survey/account", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                title: this.state.title,
-                discription: this.state.discription
+    handleSubmit = async () => {
+        if (this.state.title !== ""){
+            var token = await getToken().then(response => response);
+            fetch("hhttp://104.248.154.180/api/form/", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json',
+                    "Authorization": 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    title: this.state.title,
+                    discription: this.state.discription
+                })
             })
-        })
-        .then(response => console.log(response.json()))
+            .then(response => console.log(response.json()))
+        } else {
+            alert("Nothing to Submit");
+        }
+    }
+
+    renderQuestions = (item) => {
+        const questions = [];
+        const question = JSON.stringify(this.props.navigation.getParam("question", "Nothing here, click Add Question below"));
+        questions.push(question);
+        return (
+            <View style={styles.form}>
+                <Text>{item}</Text>
+            </View>
+        )
     }
 
     render() {
-        const { navigation } = this.props;
         return (
             <ScrollView>
                 <View style={styles.container}>
@@ -67,12 +84,11 @@ export default class CreateForm extends Component {
                         />
                     </View>
 
-                    <View style={styles.form}>
-                        <View>
-                            <Text>
-                                {JSON.stringify(navigation.getParam("question", "Nothing here, click Add Question below"))}
-                            </Text>
-                        </View>
+                    <View>
+                        <FlatList
+                            data={this.state.questions}
+                            renderItem={this.renderQuestions}
+                        />
                     </View>
 
                     <TouchableOpacity style={styles.rowAddQuestion} onPress={() => { this.props.navigation.navigate("menutochoose") }}>

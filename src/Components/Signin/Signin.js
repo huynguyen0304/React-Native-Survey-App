@@ -76,7 +76,11 @@ export default class Signin extends Component {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : null}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+                style={styles.wrapper}
+            >
                 <View style={styles.container}>
                     <TouchableOpacity style={styles.rowInfoContainer1} onPress={() => { this._signingoogle }}>
                         <Icon name="logo-googleplus" size={23} style={styles.icon} />
