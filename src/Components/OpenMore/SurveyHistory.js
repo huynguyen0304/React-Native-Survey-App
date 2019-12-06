@@ -51,13 +51,13 @@ export default class SurveyHistory extends Component {
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>History Form</Text>
                 </View>
-                <View>
+                <ScrollView>
                     <FlatList
                         data={this.state.dataSource}
                         renderItem={this.renderItem}
                         // keyExtractor={(item, index) => index}
                     />
-                </View>
+                </ScrollView>
             </View>
 
         )

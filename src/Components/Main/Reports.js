@@ -66,13 +66,13 @@ export default class Reports extends Component {
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>Reports</Text>
                 </View>
-                <View>
+                <ScrollView>
                     <FlatList
                         data={this.state.dataSource}
                         renderItem={this.renderItem}
                         // keyExtractor={(item, index) => index}
                     />
-                </View>
+                </ScrollView>
             </View>
 
         )

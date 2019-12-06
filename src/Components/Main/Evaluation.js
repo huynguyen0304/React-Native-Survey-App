@@ -4,6 +4,125 @@ import { CheckBox } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import getToken from '../../API/getToken';
 
+
+
+function Item({ id, title, selected, onSelect }) {
+    return (
+        <View style={{ flexDirection: "row", width: "70%" }}>
+            <CheckBox
+                checkedIcon={<Icon name="ios-radio-button-on" size={23} />}
+                uncheckedIcon={<Icon name="ios-radio-button-off" size={23} />}
+                onPress={() => onSelect(id)}
+                checked={selected}
+            />
+            <Text style={styles.answerText}>{title}</Text>
+        </View>);
+}
+const AnswereItems = ({ items }) => {
+    const [selected, setSelected] = React.useState(new Map());
+
+    const onSelect = React.useCallback(
+        id => {
+            const newSelected = new Map(selected);
+            newSelected.set(id, !selected.get(id));
+
+            setSelected(newSelected);
+        },
+        [selected],
+    );
+    return (
+        <View style={styles.form}>
+            <View>
+                <Text style={styles.questionText}>{items.title}</Text>
+                <View>
+                    <FlatList
+                        data={items.answers}
+                        renderItem={({ item }) => (
+                            <Item
+                                id={item.id}
+                                title={item.answer}
+                                selected={!!selected.get(item.id)}
+                                onSelect={onSelect}
+                            />
+                        )}
+                        extraData={selected}
+                        keyExtractor={items => items.id}
+                    />
+                </View>
+            </View>
+        </View>
+    );
+}
+const AnswereItems1 = ({ items }) => {
+    const [selected, setSelected] = React.useState(new Map());
+
+    const onSelect = React.useCallback(
+        id => {
+            const newSelected = new Map(selected);
+            newSelected.set(id, !selected.get(id));
+
+            setSelected(newSelected);
+        },
+        [selected],
+    );
+    return (
+        <View style={styles.form}>
+            <View>
+                <Text style={styles.questionText}>{items.title}</Text>
+                <View>
+                    <FlatList
+                        data={items.answers}
+                        renderItem={({ item }) => (
+                            <Item
+                                id={item.id}
+                                title={item.answer}
+                                selected={!!selected.get(item.id)}
+                                onSelect={onSelect}
+                            />
+                        )}
+                        extraData={selected}
+                        keyExtractor={items => items.id}
+                    />
+                </View>
+            </View>
+        </View>
+    );
+}
+const AnswereItems2 = ({ items }) => {
+    const [selected, setSelected] = React.useState(new Map());
+
+    const onSelect = React.useCallback(
+        id => {
+            const newSelected = new Map(selected);
+            newSelected.set(id, !selected.get(id));
+
+            setSelected(newSelected);
+        },
+        [selected],
+    );
+    return (
+        <View style={styles.form}>
+            <View>
+                <Text style={styles.questionText}>{items.title}</Text>
+                <View>
+                    <FlatList
+                        data={items.answers}
+                        renderItem={({ item }) => (
+                            <Item
+                                id={item.id}
+                                title={item.answer}
+                                selected={!!selected.get(item.id)}
+                                onSelect={onSelect}
+                            />
+                        )}
+                        extraData={selected}
+                        keyExtractor={items => items.id}
+                    />
+                </View>
+            </View>
+        </View>
+    );
+}
 export default class Evaluation extends Component {
     constructor(props) {
         super(props);
@@ -13,11 +132,10 @@ export default class Evaluation extends Component {
             idQuestion: [],
             value: "",
             activeCheckboxIndex: -1, //luc khoi tao thi vi tri la -1
-            indexAnswer: -1
+            activeCheckboxIndex1: -1,
+            idAnswer: ""
         };
     }
-
-    componentDidUpdate() {}
 
     componentDidMount = async () => {
         const id = JSON.stringify(this.props.navigation.getParam("id", "Nothing here !"));
@@ -40,38 +158,42 @@ export default class Evaluation extends Component {
             })
     }
 
-    handleChange = (item, index) => {
+    handleChange = (index) => {
         this.setState({
-            activeCheckboxIndex: index,
-            indexAnswer: index
+            activeCheckboxIndex: index
         })
-        
-        console.log("State " , this.state.activeCheckboxIndex)
-        console.log("Press ",index);
-        console.log("idAnswer", this.state.indexAnswer)
+    }
+
+    handleChange1 = (index) => {
+        this.setState({
+            activeCheckboxIndex1: index
+        })
     }
 
     data = ({ item, index }) => {
-        console.log("Index: ", index);
-        console.log(item.id);
-
         return (
             <View style={{ flexDirection: "row", width: "70%" }}>
                 <CheckBox
                     checkedIcon={<Icon name="ios-radio-button-on" size={23} />}
                     uncheckedIcon={<Icon name="ios-radio-button-off" size={23} />}
-                    onPress={()=>{this.handleChange(item.id, index)}}
-                    checked={(this.state.activeCheckboxIndex===index && this.state.indexAnswer===item.id)?true:false} //neu no băng index cua cai checkbox hien tai thì set lại thành true, không thì bằng false
+                    onPress={() => this.handleChange(index)}
+                    checked={this.state.activeCheckboxIndex===index?true:false}
                 />
                 <Text style={styles.answerText}>{item.answer}</Text>
             </View>
         )
     }
 
-    value = ({ item }) => {
+    data1 = ({ item, index }) => {
         return (
-            <View>
-                <Text style={styles.answerText}>{item.value}</Text>
+            <View style={{ flexDirection: "row", width: "70%" }}>
+                <CheckBox
+                    checkedIcon={<Icon name="ios-radio-button-on" size={23} />}
+                    uncheckedIcon={<Icon name="ios-radio-button-off" size={23} />}
+                    onPress={() => this.handleChange1(index)}
+                    checked={this.state.activeCheckboxIndex1===index?true:false}
+                />
+                <Text style={styles.answerText}>{item.answer}</Text>
             </View>
         )
     }
@@ -80,7 +202,10 @@ export default class Evaluation extends Component {
 
     questionItem = ({ item }) => {
         if (item.type_questions === "multiple") {
+            return (<AnswereItems items={item} />)
+        } else if (item.type_questions === "yes/no") {
             return (
+                // <AnswereItems1 items={item} />
                 <View style={styles.form}>
                     <View>
                         <Text style={styles.questionText}>{item.title}</Text>
@@ -88,38 +213,27 @@ export default class Evaluation extends Component {
                             <FlatList
                                 data={item.answers}
                                 renderItem={this.data}
-                                extraData={this.state.indexAnswer}
-                                keyExtractor={this._keyExtractor}
+                                // extraData={this.state}
+                                keyExtractor={item => item.id}
                             />
                         </View>
                     </View>
                 </View>
             )
-        } else if (item.type_questions === "yes/no") {
-            return (
-                <View style={styles.form}>
-                    <View>
-                        <Text style={styles.questionText}>{item.title}</Text>
-                        <FlatList
-                            data={item.answers}
-                            renderItem={this.data}
-                            extraData={this.state}
-                            keyExtractor={this._keyExtractor}
-                        />
-                    </View>
-                </View>
-            )
         } else if (item.type_questions === "vote") {
             return (
+                // <AnswereItems2 items={item} />
                 <View style={styles.form}>
                     <View>
                         <Text style={styles.questionText}>{item.title}</Text>
-                        <FlatList
-                            data={item.answers}
-                            renderItem={this.data}
-                            extraData={this.state}
-                            keyExtractor={this._keyExtractor}
-                        />
+                        <View>
+                            <FlatList
+                                data={item.answers}
+                                renderItem={this.data1}
+                                // extraData={this.state}
+                                keyExtractor={item => item.id}
+                            />
+                        </View>
                     </View>
                 </View>
             )
@@ -187,8 +301,7 @@ export default class Evaluation extends Component {
                     <FlatList
                         data={this.state.forms.questions}
                         renderItem={this.questionItem}
-                        keyExtractor={this._keyExtractor}
-                        extraData={this.state}
+                        keyExtractor={item => item.id}
                     />
                 </View>
                 <View>

@@ -94,11 +94,7 @@ export default class MultipleChoices extends Component {
                                     return <View style={styles.rowCheckbox}
                                         key={key}
                                     >
-                                        <CheckBox
-                                            name="isChecked"
-                                            checked={item.isChecked}
-                                            onChange={this.handleChange}
-                                        />
+                                        <CheckBox/>
 
                                         <TextInput
                                             name="question"

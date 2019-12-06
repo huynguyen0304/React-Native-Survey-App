@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Text, StyleSheet, View, TextInput, TouchableOpacity, FlatList
+    Text, StyleSheet, View, TextInput, TouchableOpacity, FlatList, ScrollView
 } from 'react-native';
 import Modal from "react-native-modal";
 import getToken from '../../API/getToken';
@@ -18,9 +18,7 @@ export default class Main extends Component {
         this.onPress = this.handleEnter;
     }
 
-    componentDidUpdate() {
-        // console.log(this.state.forms)
-    }
+    componentDidUpdate() {}
 
     renderItem = ({ item }) => {
         const id = item.id;
@@ -78,7 +76,10 @@ export default class Main extends Component {
     }
 
     closeModal = () => {
-        this.setState({ isModalVisible: false });
+        this.setState({
+            isModalVisible: false,
+            surveykey: !this.state.surveykey
+        });
     }
 
     render() {
@@ -87,13 +88,13 @@ export default class Main extends Component {
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>Home</Text>
                 </View>
-                <View>
+                <ScrollView>
                     <FlatList
                         data={this.state.forms}
                         renderItem={this.renderItem}
-                    // keyExtractor={(item, index) => index}
+                        // keyExtractor={index => index.id}
                     />
-                </View>
+                </ScrollView>
                 <Modal
                     isVisible={this.state.isModalVisible}
                     style={styles.modalcontainer}>
@@ -101,6 +102,7 @@ export default class Main extends Component {
                     <TextInput
                         style={styles.textinput}
                         value={this.state.surveykey}
+                        autoFocus={true}
                         maxLength={15}
                         onChangeText={(surveykey) => this.setState({ surveykey })}
                     />
